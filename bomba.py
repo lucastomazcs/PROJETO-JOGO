@@ -1,6 +1,6 @@
 class Bomba:
     
-    def __init__(self, posicaobomba, tempo, raiodeexplosao) -> None:
+    def __init__(self, posicaobomba, tempo, raiodeexplosao):
         self.__posicaobomba = posicaobomba
         self.__tempo = tempo
         self.__raiodeexplosao = raiodeexplosao
