@@ -11,7 +11,7 @@ class Player(Bomba, pygame.sprite.Sprite):
       self.__velocidade = velocidade
       self.__range_bomba = range_bomba
 
-      self.image = pygame.Surface((40,50))
+      self.image = pygame.Surface((40,50)) #Isso vai ser o personagem, quando ele estiver pronto dentro da parte grafica, por enquanto é um retangulo!
       self.image.fill((255,0,0))
 
       self.rect = self.image.get_rect(topleft=posicao)
