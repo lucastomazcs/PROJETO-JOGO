@@ -1,7 +1,7 @@
 from bomba import Bomba
 
 class Player(Bomba):
-   def __init__(self, posicaobomba, tempo, raiodeexplosao, posicao, vida, velocidade, range_bomba) -> None:
+   def __init__(self, posicaobomba, tempo, raiodeexplosao, posicao, vida, velocidade, range_bomba):
       super().__init__(posicaobomba, tempo, raiodeexplosao)
       self.__posicao = posicao
       self.__vida = vida
