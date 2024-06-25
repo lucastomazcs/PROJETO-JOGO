@@ -41,6 +41,17 @@ class Player(Bomba, pygame.sprite.Sprite):
      if keys[pygame.K_a]:
          self.rect.x -= self.__velocidade
 
+     #Limitar objeto dentro das bordas da tela:
+
+     if self.rect.left < 0:
+         self.rect.left = 0
+     if self.rect.right > 1024:
+         self.rect.right = 1024
+     if self.rect.top < 0:
+         self.rect.top = 0
+     if self.rect.bottom > 800:
+         self.rect.bottom = 800
+
      self.__posicao = self.rect.topleft
 
    def update(self):
