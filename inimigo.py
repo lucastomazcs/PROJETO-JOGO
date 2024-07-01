@@ -1,6 +1,9 @@
-class Inimigo:
+import pygame
+
+class Inimigo(pygame.sprite.Sprite):
     
     def __init__(self, posicao, vida, velocidade, direcao):
+        super().__init__()
         self.__posicao = posicao
         self.__vida = vida
         self.__velocidade = velocidade
