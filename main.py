@@ -1,7 +1,7 @@
 import pygame
 import sys
 from player import Player
-
+from mapa import Mapa
 
 pygame.init()
 
@@ -19,6 +19,8 @@ def main():
     clock = pygame.time.Clock()
     rodando = True
 
+    mapa = Mapa()
+
     #Criando o objeto jogador:
     jogador = Player(posicaobomba=(0,0), tempo=(0), raiodeexplosao=(2), posicao=(90,100), vida= (100), velocidade=(5), range_bomba=(10))
     todos_os_sprites = pygame.sprite.Group()
@@ -33,6 +35,7 @@ def main():
         todos_os_sprites.update()
 
         tela.fill(branco)
+        mapa.desenhar(tela)
         todos_os_sprites.draw(tela)
         
 
