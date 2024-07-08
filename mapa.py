@@ -23,6 +23,7 @@ class Mapa:
 
         #definindo mapa
         self.mapa = [
+            # 'W' = Paredes, 'E' = espaços vazios e 'B' = Blocos
             "WWWWWWWWWWWW",
             "WEEEEEEEEEEW",
             "WEBEBEBEBEBW",
