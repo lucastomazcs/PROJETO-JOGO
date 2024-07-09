@@ -5,8 +5,12 @@ from mapa import Mapa
 
 pygame.init()
 
-largura = 1024
-altura = 800
+num_blocos_x = 12
+num_blocos_y = 11
+tamanho_bloco = 64
+
+largura = num_blocos_x * tamanho_bloco
+altura =  num_blocos_y * tamanho_bloco
 
 tela = pygame.display.set_mode((largura, altura))
 
@@ -19,7 +23,7 @@ def main():
     clock = pygame.time.Clock()
     rodando = True
 
-    mapa = Mapa()
+    mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco)
 
     #Criando o objeto jogador:
     jogador = Player(posicaobomba=(0,0), tempo=(0), raiodeexplosao=(2), posicao=(90,100), vida= (100), velocidade=(5), range_bomba=(10))

@@ -2,24 +2,16 @@ import pygame
 
 class Mapa:
     
-    def __init__(self):
+    def __init__(self, num_blocos_x, num_blocos_y, tamanho_bloco):
         self.branco = (255,255,255)
         self.preto = (0,0,0)
         self.cinza = (128,128,128)
         self.azul = (0,0,120)
 
-        self.largura_tela = 1024
-        self.altura_tela = 800
+        self.num_blocos_x = num_blocos_x
+        self.num_blocos_y = num_blocos_y
+        self.tamanho_bloco = tamanho_bloco
 
-        self.largura_mapa = self.largura_tela
-        self.altura_mapa = self.altura_tela
-
-        self.num_blocos_x = 12
-        self.num_blocos_y = 10
-
-
-        self.tamanho_bloco_x = self.largura_tela // self.num_blocos_x
-        self.tamanho_bloco_y = self.altura_tela // self.num_blocos_y
 
         #definindo mapa
         self.mapa = [
@@ -37,19 +29,15 @@ class Mapa:
             "WWWWWWWWWWWW"
         ]
 
-        #Ajuste de escala do mapa:
-        self.largura_mapa = self.num_blocos_x * self.tamanho_bloco_x
-        self.altura_mapa = self.num_blocos_y * self.tamanho_bloco_y
-
-
+    
     def desenhar(self, tela):
         for y, linha in enumerate(self.mapa):
             for x, bloco in enumerate(linha):
-                x_pos = x * self.tamanho_bloco_x
-                y_pos = y * self.tamanho_bloco_y
+                x_pos = x * self.tamanho_bloco
+                y_pos = y * self.tamanho_bloco
                 if bloco == 'W':
-                    pygame.draw.rect(tela, self.cinza, pygame.Rect(x_pos, y_pos, self.tamanho_bloco_x, self.tamanho_bloco_y))
+                    pygame.draw.rect(tela, self.cinza, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
                 elif bloco == 'B':
-                    pygame.draw.rect(tela, self.azul, pygame.Rect(x_pos, y_pos, self.tamanho_bloco_x, self.tamanho_bloco_y))
+                    pygame.draw.rect(tela, self.azul, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
                 elif bloco == 'E':
-                   pygame.draw.rect(tela, self.branco, pygame.Rect(x_pos, y_pos, self.tamanho_bloco_x, self.tamanho_bloco_y))
+                   pygame.draw.rect(tela, self.branco, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
