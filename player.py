@@ -1,5 +1,7 @@
 import pygame
 from bomba import Bomba
+from mapa import Mapa
+
 
 class Player(Bomba, pygame.sprite.Sprite):
    def __init__(self, posicaobomba, tempo, raiodeexplosao, posicao, vida, velocidade, range_bomba):
