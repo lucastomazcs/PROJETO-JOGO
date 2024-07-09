@@ -6,7 +6,7 @@ class Mapa:
         self.branco = (255,255,255)
         self.preto = (0,0,0)
         self.cinza = (128,128,128)
-        self.vermelho = (180,0,0)
+        self.azul = (0,0,120)
 
         self.largura_tela = 1024
         self.altura_tela = 800
@@ -50,6 +50,6 @@ class Mapa:
                 if bloco == 'W':
                     pygame.draw.rect(tela, self.cinza, pygame.Rect(x_pos, y_pos, self.tamanho_bloco_x, self.tamanho_bloco_y))
                 elif bloco == 'B':
-                    pygame.draw.rect(tela, self.vermelho, pygame.Rect(x_pos, y_pos, self.tamanho_bloco_x, self.tamanho_bloco_y))
+                    pygame.draw.rect(tela, self.azul, pygame.Rect(x_pos, y_pos, self.tamanho_bloco_x, self.tamanho_bloco_y))
                 elif bloco == 'E':
                    pygame.draw.rect(tela, self.branco, pygame.Rect(x_pos, y_pos, self.tamanho_bloco_x, self.tamanho_bloco_y))
