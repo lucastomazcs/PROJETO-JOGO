@@ -16,17 +16,17 @@ class Mapa:
         #definindo mapa
         self.mapa = [
             # 'W' = Paredes, 'E' = espaços vazios e 'B' = Blocos
-            "WWWWWWWWWWWW",
-            "WEEEEEEEEEEW",
-            "WEBEBEBEBEBW",
-            "WEEEEEEEEEEW",
-            "WEBEBEBEBEBW",
-            "WEEEEEEEEEEW",
-            "WEBEBEBEBEBW",
-            "WEEEEEEEEEEW",
-            "WEBEBEBEBEBW",
-            "WEEEEEEEEEEW",
-            "WWWWWWWWWWWW"
+            "WWWWWWWWWWWWWWW",
+            "WEEEEEEEEEEEEEW",
+            "WEBEBEBEBEBEBEW",
+            "WEEEEEEEEEEEEEW",
+            "WEBEBEBEBEBEBEW",
+            "WEEEEEEEEEEEEEW",
+            "WEBEBEBEBEBEBEW",
+            "WEEEEEEEEEEEEEW",
+            "WEBEBEBEBEBEBEW",
+            "WEEEEEEEEEEEEEW",
+            "WWWWWWWWWWWWWWW"
         ]
 
     

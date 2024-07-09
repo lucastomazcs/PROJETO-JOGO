@@ -5,7 +5,7 @@ from mapa import Mapa
 
 pygame.init()
 
-num_blocos_x = 12
+num_blocos_x = 15
 num_blocos_y = 11
 tamanho_bloco = 64
 
