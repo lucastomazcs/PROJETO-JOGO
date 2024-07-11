@@ -1,9 +1,16 @@
-class Bomba:
+import pygame
+
+class Bomba(pygame.sprite.Sprite):
     
-    def __init__(self, posicaobomba, tempo, raiodeexplosao):
+    def __init__(self, posicaobomba, tempo, raiodeexplosao, imagem_Bombas):
+        pygame.sprite.Sprite.__init__(self)
+
         self.__posicaobomba = posicaobomba
         self.__tempo = tempo
         self.__raiodeexplosao = raiodeexplosao
+        self.sprites = []
+        self.sprites.append(pygame.image.load('Bombas/bombinha1.png'))
+
 
     @property
     def posicaoBomba(self):
