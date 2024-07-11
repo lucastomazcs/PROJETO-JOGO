@@ -3,7 +3,7 @@ from bomba import Bomba
 from mapa import Mapa
 
 
-class Player(Bomba, pygame.sprite.Sprite):
+class Player(Bomba, pygame.sprite.Sprite, Mapa):
    def __init__(self, posicaobomba, tempo, raiodeexplosao, posicao, vida, velocidade, range_bomba):
       super().__init__(posicaobomba, tempo, raiodeexplosao)
       pygame.sprite.Sprite.__init__(self) #Inicializa uma superclasse do pygame
@@ -55,6 +55,10 @@ class Player(Bomba, pygame.sprite.Sprite):
          self.rect.bottom = 800
 
      self.__posicao = self.rect.topleft
+
+   def plantar_bomba(self, posicaobomba, plantar):
+       self.__posicaobomba = posicaobomba
+       self.__plantar = plantar
 
    def update(self):
      self.movimento() 
