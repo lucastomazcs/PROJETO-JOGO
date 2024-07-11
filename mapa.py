@@ -1,4 +1,10 @@
 import pygame
+from pygame.sprite import _Group
+
+class Bloco(pygame.sprite.Sprite):
+    def __init__(self, cor, x, y, tamanho_bloco):
+        super().__init__()
+        
 
 class Mapa:
     
