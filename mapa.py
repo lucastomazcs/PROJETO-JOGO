@@ -1,14 +1,15 @@
 import pygame
-from pygame.sprite import _Group
-import main
-from bomba import Bomba
+from pygame.sprite import Sprite
 
-class Bloco(pygame.sprite.Sprite):
-    def __init__(self, cor, x, y, tamanho_bloco):
-        super().__init__()
-        
+class Bloco(Sprite):
+    def __init__(self, imagem, x, y, tamanho_bloco):
+        super().__init__() #Inicializando a sprite
+        self.image = pygame.image.load(imagem).convert_alpha()
+        self.image = pygame.transform.scale(self.image,(tamanho_bloco, tamanho_bloco))
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x , y) # para definir a posição do retângulo (Bloco destrutivel) na tela
 
-class Mapa(main, Bomba):
+class Mapa:
     
     def __init__(self, num_blocos_x, num_blocos_y, tamanho_bloco):
         self.branco = (255,255,255)
@@ -20,8 +21,7 @@ class Mapa(main, Bomba):
         self.num_blocos_y = num_blocos_y
         self.tamanho_bloco = tamanho_bloco
 
-        self.bomba = Bomba(posicaobomba=(x_bomba, y_bomba), tempo= 5, raiodeexplosao= 3, imagem_Bombas=imagem_Bombas)
-
+        
         #definindo mapa
         self.mapa = [
             # 'W' = Paredes, 'E' = espaços vazios e 'B' = Blocos
@@ -32,14 +32,18 @@ class Mapa(main, Bomba):
             "WEBEBEBEBEBEBEW",
             "WEEEEEEEEEEEEEW",
             "WEBEBEBEBEBEBEW",
-            "WEEEEEEEEEPEEEW",
+            "WEEEEEEEEEEEEEW",
             "WEBEBEBEBEBEBEW",
             "WEEEEEEEEEEEEEW",
             "WWWWWWWWWWWWWWW"
         ]
 
+        self.blocos = pygame.sprite.Group()
     
     def desenhar(self, tela):
+
+        self.blocos.empty() #Limpa os blocos antes de redesenhá-los
+
         for y, linha in enumerate(self.mapa):
             for x, bloco in enumerate(linha):
                 x_pos = x * self.tamanho_bloco
@@ -47,8 +51,10 @@ class Mapa(main, Bomba):
                 if bloco == 'W':
                     pygame.draw.rect(tela, self.cinza, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
                 elif bloco == 'B':
-                    pygame.draw.rect(tela, self.azul, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
+                    bloco_sprite = Bloco('bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)
+                    self.blocos.add(bloco_sprite)
                 elif bloco == 'E':
-                   pygame.draw.rect(tela, self.branco, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
-                elif bloco == "P":
-                    pass
+                   pygame.draw.rect(tela, self.preto, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
+        
+        self.blocos.draw(tela)
+               
