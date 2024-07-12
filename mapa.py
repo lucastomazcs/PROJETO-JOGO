@@ -1,12 +1,14 @@
 import pygame
 from pygame.sprite import _Group
+import main
+from bomba import Bomba
 
 class Bloco(pygame.sprite.Sprite):
     def __init__(self, cor, x, y, tamanho_bloco):
         super().__init__()
         
 
-class Mapa:
+class Mapa(main, Bomba):
     
     def __init__(self, num_blocos_x, num_blocos_y, tamanho_bloco):
         self.branco = (255,255,255)
@@ -18,6 +20,7 @@ class Mapa:
         self.num_blocos_y = num_blocos_y
         self.tamanho_bloco = tamanho_bloco
 
+        self.bomba = Bomba(posicaobomba=(x_bomba, y_bomba), tempo= 5, raiodeexplosao= 3, imagem_Bombas=imagem_Bombas)
 
         #definindo mapa
         self.mapa = [
@@ -29,7 +32,7 @@ class Mapa:
             "WEBEBEBEBEBEBEW",
             "WEEEEEEEEEEEEEW",
             "WEBEBEBEBEBEBEW",
-            "WEEEEEEEEEEEEEW",
+            "WEEEEEEEEEPEEEW",
             "WEBEBEBEBEBEBEW",
             "WEEEEEEEEEEEEEW",
             "WWWWWWWWWWWWWWW"
@@ -47,3 +50,5 @@ class Mapa:
                     pygame.draw.rect(tela, self.azul, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
                 elif bloco == 'E':
                    pygame.draw.rect(tela, self.branco, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
+                elif bloco == "P":
+                    pass
