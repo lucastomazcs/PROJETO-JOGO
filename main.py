@@ -1,9 +1,11 @@
 import pygame
 import sys
 from mapa import Mapa
+
+
 pygame.init()
 num_blocos_x = 15
-num_blocos_y = 11
+num_blocos_y = 15
 tamanho_bloco = 64
 
 largura = num_blocos_x * tamanho_bloco
@@ -20,14 +22,16 @@ def main():
     clock = pygame.time.Clock()
     rodando = True
 
+   
     mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco)
-
+ 
 
     while rodando:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                rodando = False
-
+               
+          
         tela.fill(preto)
         mapa.desenhar(tela)
         

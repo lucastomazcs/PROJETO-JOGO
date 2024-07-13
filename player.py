@@ -1,22 +1,22 @@
 import pygame
-from bomba import Bomba
 from mapa import Mapa
+from pygame.sprite import Sprite
 
-
-class Player(Bomba, pygame.sprite.Sprite, Mapa):
-   def __init__(self, posicaobomba, tempo, raiodeexplosao, posicao, vida, velocidade, range_bomba):
-      super().__init__(posicaobomba, tempo, raiodeexplosao)
-      pygame.sprite.Sprite.__init__(self) #Inicializa uma superclasse do pygame
-
+class Player(Sprite):
+   def __init__(self, posicao, vida, velocidade, range_bomba):
+      super().__init__()
+    
       self.__posicao = posicao
       self.__vida = vida
       self.__velocidade = velocidade
       self.__range_bomba = range_bomba
 
-      self.image = pygame.Surface((40,50)) #Isso vai ser o personagem, quando ele estiver pronto dentro da parte grafica, por enquanto é um retangulo!
-      self.image.fill((255,0,0))
+      #Carregando imagem do jogador:
+      self.image = pygame.image.load('bomberman01.png').convert_alpha()
+      self.rect = self.image.get_rect()
 
-      self.rect = self.image.get_rect(topleft=posicao)
+      #Definindo posição inicial do jogador:
+      self.rect.topleft = posicao
 
 
    @property
@@ -55,10 +55,6 @@ class Player(Bomba, pygame.sprite.Sprite, Mapa):
          self.rect.bottom = 800
 
      self.__posicao = self.rect.topleft
-
-   def plantar_bomba(self, posicaobomba, plantar):
-       self.__posicaobomba = posicaobomba
-       self.__plantar = plantar
 
    def update(self):
      self.movimento() 

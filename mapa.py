@@ -1,6 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 
+
 class Bloco(Sprite):
     def __init__(self, imagem, x, y, tamanho_bloco):
         super().__init__() #Inicializando a sprite
@@ -8,6 +9,11 @@ class Bloco(Sprite):
         self.image = pygame.transform.scale(self.image,(tamanho_bloco, tamanho_bloco))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x , y) # para definir a posição do retângulo (Bloco destrutivel) na tela
+
+    def aumentar_tamanho(self,tamanho_novo):
+        self.image = pygame.transform.scale(self.image,(tamanho_novo, tamanho_novo))
+        self.rect = self.image.get_rect(topleft = self.rect.topleft)
+
 
 class Mapa:
     
@@ -22,28 +28,35 @@ class Mapa:
         self.tamanho_bloco = tamanho_bloco
 
         
+
+        
         #definindo mapa
         self.mapa = [
             # 'W' = Paredes, 'E' = espaços vazios e 'B' = Blocos
             "WWWWWWWWWWWWWWW",
-            "WEEEEEEEEEEEEEW",
+            "WEEDDDEDDDDDEEW",
+            "WEBDBEBEBEBDBEW",
+            "WEDDDDDDEEEDDEW",
+            "WDBEBEBEBEBDBDW",
+            "WDDEDDDDDDEDDDW",
+            "WDBEBEBDBEBDBDW",
+            "WDDDDEEDEDDDDDW",
+            "WDBEBEBDBEBDBDW",
+            "WDDDDDDDDDDDDDW",
+            "WDBEBEBDBEBDBDW",
+            "WDDDDDDDDDDDDDW",
             "WEBEBEBEBEBEBEW",
-            "WEEEEEEEEEEEEEW",
-            "WEBEBEBEBEBEBEW",
-            "WEEEEEEEEEEEEEW",
-            "WEBEBEBEBEBEBEW",
-            "WEEEEEEEEEEEEEW",
-            "WEBEBEBEBEBEBEW",
-            "WEEEEEEEEEEEEEW",
+            "WEEEDDDDDDDEEEW",
             "WWWWWWWWWWWWWWW"
         ]
 
         self.blocos = pygame.sprite.Group()
     
     def desenhar(self, tela):
+        #Limpa os blocos antes de redesenhá-los:
+        self.blocos.empty() 
 
-        self.blocos.empty() #Limpa os blocos antes de redesenhá-los
-
+        #Desenha os blocos:
         for y, linha in enumerate(self.mapa):
             for x, bloco in enumerate(linha):
                 x_pos = x * self.tamanho_bloco
@@ -54,7 +67,12 @@ class Mapa:
                     bloco_sprite = Bloco('bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)
                     self.blocos.add(bloco_sprite)
                 elif bloco == 'E':
-                   pygame.draw.rect(tela, self.preto, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
-        
+                    bloco_sprite = Bloco('Fundo/fundo.png', x_pos, y_pos, self.tamanho_bloco)
+                elif bloco == 'D':
+                    bloco_sprite = Bloco('bloco_destrutivel.png', x_pos, y_pos, self.tamanho_bloco)
+                    self.blocos.add(bloco_sprite)
         self.blocos.draw(tela)
-               
+    
+    def aumentar_tamanho_bloco(self, novo_tamanho):
+        for bloco in self.blocos:
+            bloco.aumentar_tamanho(novo_tamanho)
