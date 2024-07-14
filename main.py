@@ -2,6 +2,7 @@ import pygame
 import sys
 from mapa import Mapa
 from player import Player
+from inimigo import Inimigo
 
 pygame.init()
 num_blocos_x = 15
@@ -23,9 +24,9 @@ def main():
     rodando = True
 
     mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco)
-    tamanho_imagem = (60,60)
+    tamanho_imagem = (55,50)
     jogador = Player((50, 50), 100, 10, 3, mapa, tamanho= tamanho_imagem)
- 
+    inimigo = Inimigo((840, 800), 100, 5, 2, mapa, tamanho= tamanho_imagem)
 
     while rodando:
         dt = clock.tick(60) / 1000
@@ -37,6 +38,7 @@ def main():
         tela.fill(preto)
         mapa.desenhar(tela)
         tela.blit(jogador.image, jogador.rect.topleft)
+        tela.blit(inimigo.image, inimigo.rect.bottomright)
 
         pygame.display.flip()
         clock.tick(60)
