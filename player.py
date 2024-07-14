@@ -3,7 +3,7 @@ from mapa import Mapa
 from pygame.sprite import Sprite
 
 class Player(Sprite):
-   def __init__(self, posicao, vida, velocidade, range_bomba):
+   def __init__(self, posicao, vida, velocidade, range_bomba, mapa, tamanho):
       super().__init__()
     
       self.__posicao = posicao
@@ -11,11 +11,13 @@ class Player(Sprite):
       self.__velocidade = velocidade
       self.__range_bomba = range_bomba
 
+      self.mapa = mapa
+
       #Carregando imagens de animação do jogador:
       self.images = [
-          pygame.image.load('bomberman01.png').convert_alpha(),
-          pygame.image.load('bomberman02.png').convert_alpha(),
-          pygame.image.load('bomberman03.png').convert_alpha()
+          pygame.transform.scale(pygame.image.load('bomberman01.png').convert_alpha(),tamanho),
+          pygame.transform.scale(pygame.image.load('bomberman02.png').convert_alpha(),tamanho),
+          pygame.transform.scale(pygame.image.load('bomberman03.png').convert_alpha(), tamanho)
       ]
       self.image_index = 0
       self.image = self.images[self.image_index]
@@ -44,15 +46,27 @@ class Player(Sprite):
 
    def movimento(self):
      keys = pygame.key.get_pressed()
+     movimento_x = 0
+     movimento_y = 0
      if keys[pygame.K_w]:
-         self.rect.y -= self.__velocidade
+         movimento_y -= self.__velocidade
      if keys[pygame.K_s]:
-         self.rect.y += self.__velocidade
+         movimento_y += self.__velocidade
      if keys[pygame.K_d]:
-         self.rect.x += self.__velocidade
+         movimento_x += self.__velocidade
      if keys[pygame.K_a]:
-         self.rect.x -= self.__velocidade
-
+         movimento_x -= self.__velocidade
+    
+     self.rect.x += movimento_x
+     if pygame.sprite.spritecollideany(self, self.mapa.blocos):
+         self.rect.x -= movimento_x
+    
+     self.rect.y += movimento_y
+     if pygame.sprite.spritecollideany(self, self.mapa.blocos):
+         self.rect.y -= movimento_y
+     
+     self.__posicao = self.rect.topleft
+   
    def animacao(self, dt):
      self.contador_tempo += dt
      if self.contador_tempo >= self.tempo_animacao:
@@ -71,7 +85,7 @@ class Player(Sprite):
      #if self.rect.bottom > 800:
        #  self.rect.bottom = 800
 
-     self.__posicao = self.rect.topleft
+     
 
    def update(self, dt):
      self.movimento() 

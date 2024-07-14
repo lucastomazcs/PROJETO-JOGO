@@ -22,8 +22,9 @@ def main():
     clock = pygame.time.Clock()
     rodando = True
 
-    jogador = Player((50, 50), 100, 10, 3)
     mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco)
+    tamanho_imagem = (60,60)
+    jogador = Player((50, 50), 100, 10, 3, mapa, tamanho= tamanho_imagem)
  
 
     while rodando:
@@ -34,9 +35,8 @@ def main():
                
         jogador.update(dt)
         tela.fill(preto)
-        tela.blit(jogador.image, jogador.rect.topleft)
         mapa.desenhar(tela)
-        
+        tela.blit(jogador.image, jogador.rect.topleft)
 
         pygame.display.flip()
         clock.tick(60)
