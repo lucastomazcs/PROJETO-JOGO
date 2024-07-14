@@ -1,7 +1,7 @@
 import pygame
 import sys
 from mapa import Mapa
-
+from player import Player
 
 pygame.init()
 num_blocos_x = 15
@@ -22,17 +22,19 @@ def main():
     clock = pygame.time.Clock()
     rodando = True
 
-   
+    jogador = Player((50, 50), 100, 10, 3)
     mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco)
  
 
     while rodando:
+        dt = clock.tick(60) / 1000
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                rodando = False
                
-          
+        jogador.update(dt)
         tela.fill(preto)
+        tela.blit(jogador.image, jogador.rect.topleft)
         mapa.desenhar(tela)
         
 

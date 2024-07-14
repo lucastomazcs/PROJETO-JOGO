@@ -11,12 +11,22 @@ class Player(Sprite):
       self.__velocidade = velocidade
       self.__range_bomba = range_bomba
 
-      #Carregando imagem do jogador:
-      self.image = pygame.image.load('bomberman01.png').convert_alpha()
+      #Carregando imagens de animação do jogador:
+      self.images = [
+          pygame.image.load('bomberman01.png').convert_alpha(),
+          pygame.image.load('bomberman02.png').convert_alpha(),
+          pygame.image.load('bomberman03.png').convert_alpha()
+      ]
+      self.image_index = 0
+      self.image = self.images[self.image_index]
       self.rect = self.image.get_rect()
 
       #Definindo posição inicial do jogador:
       self.rect.topleft = posicao
+
+      #Tempo de troca de animação:
+      self.tempo_animacao = 0.1
+      self.contador_tempo = 0
 
 
    @property
@@ -43,18 +53,26 @@ class Player(Sprite):
      if keys[pygame.K_a]:
          self.rect.x -= self.__velocidade
 
-     #Limitar objeto dentro das bordas da tela:
+   def animacao(self, dt):
+     self.contador_tempo += dt
+     if self.contador_tempo >= self.tempo_animacao:
+         self.contador_tempo = 0
+         self.image_index = (self.image_index + 1) % len(self.images)
+         self.image = self.images[self.image_index]
 
-     if self.rect.left < 0:
-         self.rect.left = 0
-     if self.rect.right > 1024:
-         self.rect.right = 1024
-     if self.rect.top < 0:
-         self.rect.top = 0
-     if self.rect.bottom > 800:
-         self.rect.bottom = 800
+     #Limitar objeto dentro das bordas do:
+
+     #if self.rect.left < 0:
+       #  self.rect.left = 0
+    # if self.rect.right > 1024:
+        # self.rect.right = 1024
+    # if self.rect.top < 0:
+       #  self.rect.top = 0
+     #if self.rect.bottom > 800:
+       #  self.rect.bottom = 800
 
      self.__posicao = self.rect.topleft
 
-   def update(self):
+   def update(self, dt):
      self.movimento() 
+     self.animacao(dt)
