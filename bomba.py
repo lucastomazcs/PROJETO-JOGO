@@ -35,7 +35,7 @@ class Bomba(Sprite):
             self.explodir()
 
     def explodir(self):
-
+        #Criar Logica da explosão
         self.kill() #remover bomba da tela
 
     

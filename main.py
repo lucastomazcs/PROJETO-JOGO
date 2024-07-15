@@ -5,6 +5,7 @@ from player import Player
 from inimigo import Inimigo
 
 pygame.init()
+#Temos que ajustar a tela:
 num_blocos_x = 15
 num_blocos_y = 15
 tamanho_bloco = 64

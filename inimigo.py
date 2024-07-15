@@ -71,12 +71,18 @@ class Inimigo(Sprite):
         #Atualiza posição interna:
         self.__posicao = (self.rect.x, self.rect.y)
 
+        #Adicionar colisão com obstaculos:
+
     def animacao(self, dt: float):
      self.contador_tempo += dt
      if self.contador_tempo >= self.tempo_animacao:
          self.contador_tempo = 0
          self.image_index = (self.image_index + 1) % len(self.images)
          self.image = self.images[self.image_index]
+
+    def plantar_bomba(self):
+        #Fazer o inimigo plantar bombas
+        pass
 
     def update(self, posicao_jogador,  dt: float):
        posicao_antiga = self.rect.topleft

@@ -77,7 +77,7 @@ class Player(Sprite):
 
    def plantar_bomba(self):
        bomba_pos = self.rect.topleft
-       bomba = Bomba(bomba_pos, 3, self.__range_bomba, (30,30))
+       bomba = Bomba(bomba_pos, 3, self.__range_bomba, (40,40))
        self.mapa.bombas.add(bomba)
        
      

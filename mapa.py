@@ -64,6 +64,7 @@ class Mapa:
                 x_pos = x * self.tamanho_bloco
                 y_pos = y * self.tamanho_bloco
                 if bloco == 'W':
+                    #Adicionar Sprites que faltam
                     pygame.draw.rect(tela, self.cinza, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
                 elif bloco == 'B':
                     bloco_sprite = Bloco('bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)
