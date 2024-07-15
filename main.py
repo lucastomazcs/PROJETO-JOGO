@@ -25,8 +25,13 @@ def main():
 
     mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco)
     tamanho_imagem = (55,50)
-    jogador = Player((50, 50), 100, 10, 3, mapa, tamanho= tamanho_imagem)
-    inimigo = Inimigo((840, 800), 100, 5, 2, mapa, tamanho= tamanho_imagem)
+    tamanho_imagem_inimigo = (45, 45)
+    jogador = Player((50, 50), 100, 12, 3, mapa, tamanho= tamanho_imagem)
+    inimigo = Inimigo((850, 800), 100, 10, 'direcao', mapa, tamanho= tamanho_imagem_inimigo)
+
+    sprites = pygame.sprite.Group()
+    sprites.add(jogador)
+    sprites.add(inimigo)
 
     while rodando:
         dt = clock.tick(60) / 1000
@@ -35,11 +40,14 @@ def main():
                rodando = False
                
         jogador.update(dt)
+        inimigo.update(jogador.posicao, dt)
         tela.fill(preto)
         mapa.desenhar(tela)
-        tela.blit(jogador.image, jogador.rect.topleft)
-        tela.blit(inimigo.image, inimigo.rect.bottomright)
+        
+        sprites.draw(tela)
 
+        mapa.update(dt)
+        
         pygame.display.flip()
         clock.tick(60)
 

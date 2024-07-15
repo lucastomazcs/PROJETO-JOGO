@@ -1,6 +1,7 @@
 import pygame
 from mapa import Mapa
 from pygame.sprite import Sprite
+from bomba import Bomba
 
 class Player(Sprite):
    def __init__(self, posicao, vida, velocidade, range_bomba, mapa, tamanho):
@@ -74,19 +75,16 @@ class Player(Sprite):
          self.image_index = (self.image_index + 1) % len(self.images)
          self.image = self.images[self.image_index]
 
-     #Limitar objeto dentro das bordas do:
-
-     #if self.rect.left < 0:
-       #  self.rect.left = 0
-    # if self.rect.right > 1024:
-        # self.rect.right = 1024
-    # if self.rect.top < 0:
-       #  self.rect.top = 0
-     #if self.rect.bottom > 800:
-       #  self.rect.bottom = 800
-
+   def plantar_bomba(self):
+       bomba_pos = self.rect.topleft
+       bomba = Bomba(bomba_pos, 3, self.__range_bomba, (30,30))
+       self.mapa.bombas.add(bomba)
+       
      
 
    def update(self, dt):
      self.movimento() 
      self.animacao(dt)
+     keys = pygame.key.get_pressed()
+     if keys[pygame.K_SPACE]:
+         self.plantar_bomba()

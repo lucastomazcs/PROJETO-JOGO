@@ -1,7 +1,9 @@
-from typing import Any
+from pygame.sprite import Sprite
 import pygame
+import math
+from mapa import Mapa
 
-class Inimigo(pygame.sprite.Sprite):
+class Inimigo(Sprite):
     
     def __init__(self, posicao, vida, velocidade, direcao, mapa, tamanho):
         super().__init__()
@@ -19,7 +21,11 @@ class Inimigo(pygame.sprite.Sprite):
             pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando03.png').convert_alpha(), tamanho),
             pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando_lado01.png').convert_alpha(), tamanho),
             pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando_lado02.png').convert_alpha(), tamanho),
-            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_jogando_bomba01.png').convert_alpha(), tamanho)
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando_lado03.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando_tras01.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando_tras02.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando_tras03.png').convert_alpha(), tamanho)
+           
         ]
 
         self.image_index = 0
@@ -27,7 +33,7 @@ class Inimigo(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         #Definindo posição inicial do inimigo:
-        self.rect.bottomright = posicao
+        self.rect.topleft = posicao
 
         #Tempo de troca de animação:
         self.tempo_animacao = 0.1
@@ -46,9 +52,24 @@ class Inimigo(pygame.sprite.Sprite):
     def direcao(self):
         return self.__direcao
 
-    def movimento(self):
-        pass
-    
+    def movimento(self, posicao_jogador, dt: float):
+        #Calcula a direção para o jogador:
+        jogador_x, jogador_y = posicao_jogador
+        inimigo_x, inimigo_y = self.rect.topleft
+        direcao_x = jogador_x - inimigo_x
+        direcao_y = jogador_y - inimigo_y
+        distancia = math.hypot(direcao_x, direcao_y)   
+
+        if distancia > 0:
+            direcao_x /= distancia
+            direcao_y /= distancia 
+        
+        #Atualizando posição inimigo:
+        self.rect.x += direcao_x * self.velocidade * dt
+        self.rect.y += direcao_y * self.velocidade * dt
+
+        #Atualiza posição interna:
+        self.__posicao = (self.rect.x, self.rect.y)
 
     def animacao(self, dt: float):
      self.contador_tempo += dt
@@ -57,5 +78,12 @@ class Inimigo(pygame.sprite.Sprite):
          self.image_index = (self.image_index + 1) % len(self.images)
          self.image = self.images[self.image_index]
 
-    def update(self, dt: float):
-       self.animacao(dt)
+    def update(self, posicao_jogador,  dt: float):
+       posicao_antiga = self.rect.topleft
+       
+       #Perseguir Jogador:
+       self.movimento(posicao_jogador, dt)
+
+       #Atualiza animação quando inimigo se move:
+       if self.rect.topleft!= posicao_antiga:
+        self.animacao(dt)

@@ -9,6 +9,7 @@ class Bloco(Sprite):
         self.image = pygame.transform.scale(self.image,(tamanho_bloco, tamanho_bloco))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x , y) # para definir a posição do retângulo (Bloco destrutivel) na tela
+        
 
     def aumentar_tamanho(self,tamanho_novo):
         self.image = pygame.transform.scale(self.image,(tamanho_novo, tamanho_novo))
@@ -51,6 +52,7 @@ class Mapa:
         ]
 
         self.blocos = pygame.sprite.Group()
+        self.bombas = pygame.sprite.Group()
     
     def desenhar(self, tela):
         #Limpa os blocos antes de redesenhá-los:
@@ -72,7 +74,13 @@ class Mapa:
                     bloco_sprite = Bloco('bloco_destrutivel.png', x_pos, y_pos, self.tamanho_bloco)
                     self.blocos.add(bloco_sprite)
         self.blocos.draw(tela)
-    
+        self.bombas.draw(tela)
+
+    def update(self, dt):
+        self.bombas.update(dt)
+        
     def aumentar_tamanho_bloco(self, novo_tamanho):
         for bloco in self.blocos:
             bloco.aumentar_tamanho(novo_tamanho)
+
+    
