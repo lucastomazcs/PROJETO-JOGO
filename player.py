@@ -1,22 +1,35 @@
 import pygame
-from bomba import Bomba
 from mapa import Mapa
+from pygame.sprite import Sprite
+from bomba import Bomba
 
-
-class Player(Bomba, pygame.sprite.Sprite):
-   def __init__(self, posicaobomba, tempo, raiodeexplosao, posicao, vida, velocidade, range_bomba):
-      super().__init__(posicaobomba, tempo, raiodeexplosao)
-      pygame.sprite.Sprite.__init__(self) #Inicializa uma superclasse do pygame
-
+class Player(Sprite):
+   def __init__(self, posicao, vida, velocidade, range_bomba, mapa, tamanho):
+      super().__init__()
+    
       self.__posicao = posicao
       self.__vida = vida
       self.__velocidade = velocidade
       self.__range_bomba = range_bomba
 
-      self.image = pygame.Surface((40,50)) #Isso vai ser o personagem, quando ele estiver pronto dentro da parte grafica, por enquanto é um retangulo!
-      self.image.fill((255,0,0))
+      self.mapa = mapa
 
-      self.rect = self.image.get_rect(topleft=posicao)
+      #Carregando imagens de animação do jogador:
+      self.images = [
+          pygame.transform.scale(pygame.image.load('bomberman01.png').convert_alpha(),tamanho),
+          pygame.transform.scale(pygame.image.load('bomberman02.png').convert_alpha(),tamanho),
+          pygame.transform.scale(pygame.image.load('bomberman03.png').convert_alpha(), tamanho)
+      ]
+      self.image_index = 0
+      self.image = self.images[self.image_index]
+      self.rect = self.image.get_rect()
+
+      #Definindo posição inicial do jogador:
+      self.rect.topleft = posicao
+
+      #Tempo de troca de animação:
+      self.tempo_animacao = 0.1
+      self.contador_tempo = 0
 
 
    @property
@@ -34,27 +47,44 @@ class Player(Bomba, pygame.sprite.Sprite):
 
    def movimento(self):
      keys = pygame.key.get_pressed()
+     movimento_x = 0
+     movimento_y = 0
      if keys[pygame.K_w]:
-         self.rect.y -= self.__velocidade
+         movimento_y -= self.__velocidade
      if keys[pygame.K_s]:
-         self.rect.y += self.__velocidade
+         movimento_y += self.__velocidade
      if keys[pygame.K_d]:
-         self.rect.x += self.__velocidade
+         movimento_x += self.__velocidade
      if keys[pygame.K_a]:
-         self.rect.x -= self.__velocidade
-
-     #Limitar objeto dentro das bordas da tela:
-
-     if self.rect.left < 0:
-         self.rect.left = 0
-     if self.rect.right > 1024:
-         self.rect.right = 1024
-     if self.rect.top < 0:
-         self.rect.top = 0
-     if self.rect.bottom > 800:
-         self.rect.bottom = 800
-
+         movimento_x -= self.__velocidade
+    
+     self.rect.x += movimento_x
+     if pygame.sprite.spritecollideany(self, self.mapa.blocos):
+         self.rect.x -= movimento_x
+    
+     self.rect.y += movimento_y
+     if pygame.sprite.spritecollideany(self, self.mapa.blocos):
+         self.rect.y -= movimento_y
+     
      self.__posicao = self.rect.topleft
+   
+   def animacao(self, dt):
+     self.contador_tempo += dt
+     if self.contador_tempo >= self.tempo_animacao:
+         self.contador_tempo = 0
+         self.image_index = (self.image_index + 1) % len(self.images)
+         self.image = self.images[self.image_index]
 
-   def update(self):
+   def plantar_bomba(self):
+       bomba_pos = self.rect.topleft
+       bomba = Bomba(bomba_pos, 3, self.__range_bomba, (40,40))
+       self.mapa.bombas.add(bomba)
+       
+     
+
+   def update(self, dt):
      self.movimento() 
+     self.animacao(dt)
+     keys = pygame.key.get_pressed()
+     if keys[pygame.K_SPACE]:
+         self.plantar_bomba()
