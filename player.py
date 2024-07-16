@@ -15,9 +15,10 @@ class Player(Sprite):
       self.mapa = mapa
 
       #Carregando imagens de animação do jogador:
+      #Falta o sprite virando para a esquerda
       self.images = [
-          pygame.transform.scale(pygame.image.load('bomberman01.png').convert_alpha(),tamanho),
-          pygame.transform.scale(pygame.image.load('bomberman02.png').convert_alpha(),tamanho),
+          pygame.transform.scale(pygame.image.load('bomberman01.png').convert_alpha(), tamanho),
+          pygame.transform.scale(pygame.image.load('bomberman02.png').convert_alpha(), tamanho),
           pygame.transform.scale(pygame.image.load('bomberman03.png').convert_alpha(), tamanho)
       ]
       self.image_index = 0
@@ -51,12 +52,16 @@ class Player(Sprite):
      movimento_y = 0
      if keys[pygame.K_w]:
          movimento_y -= self.__velocidade
+         self.image = self.images[2]
      if keys[pygame.K_s]:
          movimento_y += self.__velocidade
+         self.image = self.images[0]
      if keys[pygame.K_d]:
          movimento_x += self.__velocidade
+         self.image = self.images[1]
      if keys[pygame.K_a]:
          movimento_x -= self.__velocidade
+         self.image = self.images[0]
     
      self.rect.x += movimento_x
      if pygame.sprite.spritecollideany(self, self.mapa.blocos):
@@ -70,10 +75,12 @@ class Player(Sprite):
    
    def animacao(self, dt):
      self.contador_tempo += dt
-     if self.contador_tempo >= self.tempo_animacao:
+     ''' if self.contador_tempo >= self.tempo_animacao:
          self.contador_tempo = 0
          self.image_index = (self.image_index + 1) % len(self.images)
-         self.image = self.images[self.image_index]
+         self.image = self.images[self.image_index]''' 
+         
+         #Comentei para parar a animaçao aleatoria
 
    def plantar_bomba(self):
        bomba_pos = self.rect.topleft
@@ -84,7 +91,7 @@ class Player(Sprite):
 
    def update(self, dt):
      self.movimento() 
-     self.animacao(dt)
+     #self.animacao(dt)
      keys = pygame.key.get_pressed()
      if keys[pygame.K_SPACE]:
          self.plantar_bomba()

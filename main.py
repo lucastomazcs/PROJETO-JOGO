@@ -3,17 +3,22 @@ import sys
 from mapa import Mapa
 from player import Player
 from inimigo import Inimigo
+from tkinter import *
 
 pygame.init()
 #Temos que ajustar a tela:
+root = Tk()
+monitor_height = root.winfo_screenheight()
+monitor_width = root.winfo_screenwidth()
+
 num_blocos_x = 15
 num_blocos_y = 15
-tamanho_bloco = 64
+tamanho_bloco = (monitor_height // num_blocos_y) - 5
 
 largura = num_blocos_x * tamanho_bloco
 altura =  num_blocos_y * tamanho_bloco
 
-tela = pygame.display.set_mode((largura, altura))
+tela = pygame.display.set_mode((largura, altura), pygame.RESIZABLE)
 
 pygame.display.set_caption("Bomberman")
 
@@ -25,10 +30,10 @@ def main():
     rodando = True
 
     mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco)
-    tamanho_imagem = (55,50)
-    tamanho_imagem_inimigo = (45, 45)
-    jogador = Player((50, 50), 100, 12, 3, mapa, tamanho= tamanho_imagem)
-    inimigo = Inimigo((850, 800), 100, 10, 'direcao', mapa, tamanho= tamanho_imagem_inimigo)
+    tamanho_imagem = (tamanho_bloco - 9, tamanho_bloco - 9)
+    tamanho_imagem_inimigo = (tamanho_bloco - 9, tamanho_bloco - 9)
+    jogador = Player((60, 60), 100, 12, 3, mapa, tamanho= tamanho_imagem)
+    inimigo = Inimigo((tamanho_bloco * 13, tamanho_bloco * 13), 100, 10, 'direcao', mapa, tamanho= tamanho_imagem_inimigo)
 
     sprites = pygame.sprite.Group()
     sprites.add(jogador)
