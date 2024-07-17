@@ -73,6 +73,7 @@ class Inimigo(Sprite):
 
         #Adicionar colisão com obstaculos:
 
+
     def animacao(self, dt: float):
      self.contador_tempo += dt
      if self.contador_tempo >= self.tempo_animacao:

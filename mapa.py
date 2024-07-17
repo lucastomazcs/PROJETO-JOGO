@@ -34,7 +34,7 @@ class Mapa:
         
         #definindo mapa
         self.mapa = [
-            # 'W' = Paredes, 'E' = espaços vazios e 'B' = Blocos
+            # 'W' = paredes, 'E' = espaços vazios e 'B' = bloco indestrutível e 'D' = bloco destrutível
             "WWWWWWWWWWWWWWW",
             "WEEDDDEDDDDDEEW",
             "WEBDBEBEBEBDBEW",
@@ -50,7 +50,10 @@ class Mapa:
             "WEBEBEBEBEBEBEW",
             "WEEEDDDDDDDEEEW",
             "WWWWWWWWWWWWWWW"
+            
+
         ]
+        
 
         self.blocos = pygame.sprite.Group()
         self.bombas = pygame.sprite.Group()
@@ -65,8 +68,9 @@ class Mapa:
                 x_pos = x * self.tamanho_bloco
                 y_pos = y * self.tamanho_bloco
                 if bloco == 'W':
-                    #Adicionar Sprites que faltam
+                    #Adicionar Sprites que faltam 
                     pygame.draw.rect(tela, self.cinza, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
+                    self.blocos.add(Bloco('bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)) #funcionalidade da colisão (teste)
                 elif bloco == 'B':
                     bloco_fixo = Bloco('bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)
                     self.blocos.add(bloco_fixo)
