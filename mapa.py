@@ -15,6 +15,9 @@ class Bloco(Sprite):
         self.image = pygame.transform.scale(self.image,(tamanho_novo, tamanho_novo))
         self.rect = self.image.get_rect(topleft = self.rect.topleft)
 
+    def redimensionar_imagem(self, novo_tamanho):
+        self.image = pygame.transform.scale(self.image, (novo_tamanho, novo_tamanho))
+        self.rect = self.image.get_rect(topleft = self.rect.topleft)
 
 class Mapa:
     
@@ -27,8 +30,6 @@ class Mapa:
         self.num_blocos_x = num_blocos_x
         self.num_blocos_y = num_blocos_y
         self.tamanho_bloco = tamanho_bloco
-
-        
 
         
         #definindo mapa
@@ -67,13 +68,14 @@ class Mapa:
                     #Adicionar Sprites que faltam
                     pygame.draw.rect(tela, self.cinza, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
                 elif bloco == 'B':
-                    bloco_sprite = Bloco('bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)
-                    self.blocos.add(bloco_sprite)
+                    bloco_fixo = Bloco('bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)
+                    self.blocos.add(bloco_fixo)
                 elif bloco == 'E':
-                    bloco_sprite = Bloco('Fundo/fundo.png', x_pos, y_pos, self.tamanho_bloco)
+                    bloco_sprite = Bloco('Fundo/fundo.png', x_pos, y_pos, self.tamanho_bloco)                  
                 elif bloco == 'D':
-                    bloco_sprite = Bloco('bloco_destrutivel.png', x_pos, y_pos, self.tamanho_bloco)
-                    self.blocos.add(bloco_sprite)
+                    bloco_destrutivel = Bloco('bloco_destrutivel.png', x_pos, y_pos, self.tamanho_bloco)
+                    bloco_destrutivel.redimensionar_imagem(60)
+                    self.blocos.add(bloco_destrutivel)
         self.blocos.draw(tela)
         self.bombas.draw(tela)
 

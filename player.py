@@ -17,6 +17,7 @@ class Player(Sprite):
       #Carregando imagens de animação do jogador:
       self.images = [
           pygame.transform.scale(pygame.image.load('bomberman01.png').convert_alpha(),tamanho),
+          pygame.transform.scale(pygame.image.load('Bomberman/bomberman_ajoelhado_lado.png').convert_alpha(),tamanho),
           pygame.transform.scale(pygame.image.load('bomberman02.png').convert_alpha(),tamanho),
           pygame.transform.scale(pygame.image.load('bomberman03.png').convert_alpha(), tamanho)
       ]
@@ -30,7 +31,8 @@ class Player(Sprite):
       #Tempo de troca de animação:
       self.tempo_animacao = 0.1
       self.contador_tempo = 0
-
+    
+     
 
    @property
    def posicao(self):
@@ -64,7 +66,7 @@ class Player(Sprite):
     
      self.rect.y += movimento_y
      if pygame.sprite.spritecollideany(self, self.mapa.blocos):
-         self.rect.y -= movimento_y
+            self.rect.y -= movimento_y
      
      self.__posicao = self.rect.topleft
    
@@ -76,7 +78,7 @@ class Player(Sprite):
          self.image = self.images[self.image_index]
 
    def plantar_bomba(self):
-       bomba_pos = self.rect.topleft
+       bomba_pos = self.rect.topright
        bomba = Bomba(bomba_pos, 3, self.__range_bomba, (40,40))
        self.mapa.bombas.add(bomba)
        

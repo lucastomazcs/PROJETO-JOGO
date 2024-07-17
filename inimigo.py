@@ -33,7 +33,7 @@ class Inimigo(Sprite):
         self.rect = self.image.get_rect()
 
         #Definindo posição inicial do inimigo:
-        self.rect.topleft = posicao
+        self.rect.bottomright = posicao
 
         #Tempo de troca de animação:
         self.tempo_animacao = 0.1
@@ -55,7 +55,7 @@ class Inimigo(Sprite):
     def movimento(self, posicao_jogador, dt: float):
         #Calcula a direção para o jogador:
         jogador_x, jogador_y = posicao_jogador
-        inimigo_x, inimigo_y = self.rect.topleft
+        inimigo_x, inimigo_y = self.rect.bottomright
         direcao_x = jogador_x - inimigo_x
         direcao_y = jogador_y - inimigo_y
         distancia = math.hypot(direcao_x, direcao_y)   
@@ -85,7 +85,7 @@ class Inimigo(Sprite):
         pass
 
     def update(self, posicao_jogador,  dt: float):
-       posicao_antiga = self.rect.topleft
+       posicao_antiga = self.rect.bottomright
        
        #Perseguir Jogador:
        self.movimento(posicao_jogador, dt)

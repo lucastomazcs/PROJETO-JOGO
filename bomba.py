@@ -21,7 +21,7 @@ class Bomba(Sprite):
 
         self.image = self.images[self.image_index]
         self.rect = self.image.get_rect(topleft = posicaobomba)
-        self.tempo_animacao = 0.2
+        self.tempo_animacao = 0.02
         self.contador_tempo = 0
     
     def update(self, dt):

@@ -25,8 +25,8 @@ def main():
     rodando = True
 
     mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco)
-    tamanho_imagem = (55,50)
-    tamanho_imagem_inimigo = (45, 45)
+    tamanho_imagem = (65,65)
+    tamanho_imagem_inimigo = (70, 65)
     jogador = Player((50, 50), 100, 12, 3, mapa, tamanho= tamanho_imagem)
     inimigo = Inimigo((850, 800), 100, 10, 'direcao', mapa, tamanho= tamanho_imagem_inimigo)
 
