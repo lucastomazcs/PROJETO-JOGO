@@ -70,14 +70,14 @@ class Mapa:
                 if bloco == 'W':
                     #Adicionar Sprites que faltam 
                     pygame.draw.rect(tela, self.cinza, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
-                    self.blocos.add(Bloco('bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)) #funcionalidade da colisão (teste)
+                    self.blocos.add(Bloco('Blocos/bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)) #funcionalidade da colisão (teste)
                 elif bloco == 'B':
-                    bloco_fixo = Bloco('bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)
+                    bloco_fixo = Bloco('Blocos/bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)
                     self.blocos.add(bloco_fixo)
                 elif bloco == 'E':
                     bloco_sprite = Bloco('Fundo/fundo.png', x_pos, y_pos, self.tamanho_bloco)                  
                 elif bloco == 'D':
-                    bloco_destrutivel = Bloco('bloco_destrutivel.png', x_pos, y_pos, self.tamanho_bloco)
+                    bloco_destrutivel = Bloco('Blocos/bloco_destrutivel.png', x_pos, y_pos, self.tamanho_bloco)
                     bloco_destrutivel.redimensionar_imagem(60)
                     self.blocos.add(bloco_destrutivel)
         self.blocos.draw(tela)

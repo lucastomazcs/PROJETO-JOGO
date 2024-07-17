@@ -18,9 +18,9 @@ class Player(Sprite):
       #Falta o sprite virando para a esquerda
       self.images = [
 
-          pygame.transform.scale(pygame.image.load('bomberman01.png').convert_alpha(), tamanho),
-          pygame.transform.scale(pygame.image.load('bomberman02.png').convert_alpha(), tamanho),
-          pygame.transform.scale(pygame.image.load('bomberman03.png').convert_alpha(), tamanho)
+          pygame.transform.scale(pygame.image.load('Bomberman/bomberman01.png').convert_alpha(), tamanho),
+          pygame.transform.scale(pygame.image.load('Bomberman/bomberman02.png').convert_alpha(), tamanho),
+          pygame.transform.scale(pygame.image.load('Bomberman/bomberman03.png').convert_alpha(), tamanho)
       ]
       self.image_index = 0
       self.image = self.images[self.image_index]
