@@ -3,17 +3,20 @@ from pygame.sprite import Sprite
 
 
 class Bloco(Sprite):
-    def __init__(self, imagem, x, y, tamanho_bloco):
+    def __init__(self, imagem, x, y, tamanho_bloco, destrutivel = False):
         super().__init__() #Inicializando a sprite
         self.image = pygame.image.load(imagem).convert_alpha()
         self.image = pygame.transform.scale(self.image,(tamanho_bloco, tamanho_bloco))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x , y) # para definir a posição do retângulo (Bloco destrutivel) na tela
-        
+        self.destrutivel = destrutivel
 
     def aumentar_tamanho(self,tamanho_novo):
+        center = self.rect.center
         self.image = pygame.transform.scale(self.image,(tamanho_novo, tamanho_novo))
-        self.rect = self.image.get_rect(topleft = self.rect.topleft)
+        self.rect = self.image.get_rect()
+        self.rect.center = center
+
 
     def redimensionar_imagem(self, novo_tamanho):
         self.image = pygame.transform.scale(self.image, (novo_tamanho, novo_tamanho))
@@ -21,11 +24,12 @@ class Bloco(Sprite):
 
 class Mapa:
     
-    def __init__(self, num_blocos_x, num_blocos_y, tamanho_bloco):
+    def __init__(self, num_blocos_x, num_blocos_y, tamanho_bloco, tela):
         self.branco = (255,255,255)
         self.preto = (0,0,0)
         self.cinza = (128,128,128)
         self.azul = (0,0,120)
+        self.tela = tela
 
         self.num_blocos_x = num_blocos_x
         self.num_blocos_y = num_blocos_y
@@ -69,15 +73,15 @@ class Mapa:
                 y_pos = y * self.tamanho_bloco
                 if bloco == 'W':
                     #Adicionar Sprites que faltam 
-                    pygame.draw.rect(tela, self.cinza, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
-                    self.blocos.add(Bloco('Blocos/bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)) #funcionalidade da colisão (teste)
+                    pygame.draw.rect(tela, self.branco, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
+                    self.blocos.add(Bloco('Blocos/bloco_lateral.png', x_pos, y_pos, self.tamanho_bloco)) #funcionalidade da colisão (teste)
                 elif bloco == 'B':
                     bloco_fixo = Bloco('Blocos/bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)
                     self.blocos.add(bloco_fixo)
                 elif bloco == 'E':
                     bloco_sprite = Bloco('Fundo/fundo.png', x_pos, y_pos, self.tamanho_bloco)                  
                 elif bloco == 'D':
-                    bloco_destrutivel = Bloco('Blocos/bloco_destrutivel.png', x_pos, y_pos, self.tamanho_bloco)
+                    bloco_destrutivel = Bloco('Blocos/bloco_destrutivel.png', x_pos, y_pos, self.tamanho_bloco, destrutivel= True)
                     bloco_destrutivel.redimensionar_imagem(60)
                     self.blocos.add(bloco_destrutivel)
         self.blocos.draw(tela)
@@ -89,5 +93,8 @@ class Mapa:
     def aumentar_tamanho_bloco(self, novo_tamanho):
         for bloco in self.blocos:
             bloco.aumentar_tamanho(novo_tamanho)
+
+    def obter_blocos_destrutiveis(self):
+        return [bloco for bloco in self.blocos if bloco.destrutivel]
 
     

@@ -29,7 +29,7 @@ def main():
     clock = pygame.time.Clock()
     rodando = True
 
-    mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco)
+    mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco, tela)
     tamanho_imagem = (tamanho_bloco - 9, tamanho_bloco - 9)
     tamanho_imagem_inimigo = (tamanho_bloco - 9, tamanho_bloco - 9)
     jogador = Player((60, 60), 100, 12, 3, mapa, tamanho= tamanho_imagem)

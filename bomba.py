@@ -1,15 +1,17 @@
 import pygame
 from pygame.sprite import Sprite
+from mapa import Mapa
 
 class Bomba(Sprite):
     
-    def __init__(self, posicaobomba, tempo, raiodeexplosao, tamanho):
+    def __init__(self, posicaobomba, tempo, raiodeexplosao, tamanho, mapa):
         pygame.sprite.Sprite.__init__(self)
 
         self.__posicaobomba = posicaobomba
         self.__tempo = tempo
         self.__raiodeexplosao = raiodeexplosao
         self.tempo_decorrido = 0
+        self.mapa = mapa
 
         self.image_index = 0
         self.images = [
@@ -35,10 +37,25 @@ class Bomba(Sprite):
             self.explodir()
 
     def explodir(self):
-        #Criar Logica da explosão
+        self.criar_explosao()
+        self.causar_dano()
         self.kill() #remover bomba da tela
 
-    
+    def criar_explosao(self):
+        raio_explosao = pygame.Rect(self.rect.centerx - self.__raiodeexplosao,
+                                    self.rect.centery - self.__raiodeexplosao,
+                                    self.__raiodeexplosao *2,
+                                    self.__raiodeexplosao *2)
+        pygame.draw.rect(self.mapa.tela, (220, 0, 0), raio_explosao, 2) #Desenha o raio de exploão na tela (Teste)
+    def causar_dano(self):
+        raio_explosao = pygame.Rect(self.rect.centerx - self.__raiodeexplosao,
+                                    self.rect.centery - self.__raiodeexplosao,
+                                    self.__raiodeexplosao *2,
+                                    self.__raiodeexplosao *2)
+        for bloco in self.mapa.blocos:
+            if raio_explosao.colliderect(bloco.rect) and bloco.destrutivel:
+                bloco.kill()
+                self.mapa.blocos.remove(bloco)
     @property
     def posicaoBomba(self):
         return self.__posicaobomba
