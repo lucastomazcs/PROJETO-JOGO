@@ -82,7 +82,6 @@ class Mapa:
                     bloco_sprite = Bloco('Fundo/fundo.png', x_pos, y_pos, self.tamanho_bloco)                  
                 elif bloco == 'D':
                     bloco_destrutivel = Bloco('Blocos/bloco_destrutivel.png', x_pos, y_pos, self.tamanho_bloco, destrutivel= True)
-                    bloco_destrutivel.redimensionar_imagem(60)
                     self.blocos.add(bloco_destrutivel)
         self.blocos.draw(tela)
         self.bombas.draw(tela)
@@ -90,11 +89,14 @@ class Mapa:
     def update(self, dt):
         self.bombas.update(dt)
         
+        
     def aumentar_tamanho_bloco(self, novo_tamanho):
         for bloco in self.blocos:
             bloco.aumentar_tamanho(novo_tamanho)
 
     def obter_blocos_destrutiveis(self):
-        return [bloco for bloco in self.blocos if bloco.destrutivel]
-
+        for bloco in self.mapa.blocos:
+            if bloco.destrutivel:
+                print(f"Bloco destrutível encontrado: {bloco.rect}")
+            
     

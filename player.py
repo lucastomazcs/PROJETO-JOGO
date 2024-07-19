@@ -11,7 +11,6 @@ class Player(Sprite):
       self.__vida = vida
       self.__velocidade = velocidade
       self.__range_bomba = range_bomba
-
       self.mapa = mapa
 
       #Carregando imagens de animação do jogador:
@@ -66,11 +65,11 @@ class Player(Sprite):
          self.image = self.images[0]
     
      self.rect.x += movimento_x
-     if pygame.sprite.spritecollideany(self, self.mapa.blocos):
+     if pygame.sprite.spritecollideany(self, self.mapa.blocos) or pygame.sprite.spritecollideany(self, self.mapa.bombas):
          self.rect.x -= movimento_x
     
      self.rect.y += movimento_y
-     if pygame.sprite.spritecollideany(self, self.mapa.blocos):
+     if pygame.sprite.spritecollideany(self, self.mapa.blocos) or pygame.sprite.spritecollideany(self, self.mapa.bombas):
             self.rect.y -= movimento_y
      
      self.__posicao = self.rect.topleft
@@ -85,9 +84,16 @@ class Player(Sprite):
          #Comentei para parar a animaçao aleatoria
 
    def plantar_bomba(self):
-       bomba_pos = self.rect.topright
-       bomba = Bomba(bomba_pos, 0.4, 15, (40,40), self.mapa)
+       bomba_pos = (self.rect.centerx, self.rect.centery)
+       bomba = Bomba(bomba_pos, 0.4, 25, (40,40),self.mapa)
        self.mapa.bombas.add(bomba)
+
+    #teste de colisão com a bomba:
+   def colisao_bomba(self):
+       for bomba in self.mapa.bombas:
+           if pygame.sprite.collide_rect(self, bomba):
+               print("Colisão com bomba detectada")
+                              
        
      
 
@@ -97,3 +103,4 @@ class Player(Sprite):
      keys = pygame.key.get_pressed()
      if keys[pygame.K_SPACE]:
          self.plantar_bomba()
+     self.colisao_bomba()

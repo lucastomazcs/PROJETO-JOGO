@@ -1,6 +1,5 @@
 import pygame
 from pygame.sprite import Sprite
-from mapa import Mapa
 
 class Bomba(Sprite):
     
@@ -26,6 +25,33 @@ class Bomba(Sprite):
         self.tempo_animacao = 0.02
         self.contador_tempo = 0
     
+    def criar_explosao(self):
+        raio_explosao = pygame.Rect(self.rect.centerx - self.__raiodeexplosao,
+                                    self.rect.centery - self.__raiodeexplosao,
+                                    self.__raiodeexplosao * 2,
+                                    self.__raiodeexplosao * 2)
+        pygame.draw.rect(self.mapa.tela, (240, 0, 0), raio_explosao, 2)
+        return raio_explosao
+
+
+    def causar_dano(self, raio_explosao):
+        raio_explosao = pygame.Rect(self.rect.centerx - self.__raiodeexplosao,
+                                    self.rect.centery - self.__raiodeexplosao,
+                                    self.__raiodeexplosao * 2,
+                                    self.__raiodeexplosao * 2)
+        for bloco in self.mapa.blocos:
+            if raio_explosao.colliderect(bloco.rect) and bloco.destrutivel:
+                print(f"Colisão detectada com bloco destrutível: {bloco.rect}") #Testando a colisão
+                bloco.kill()
+                
+                
+    
+    def explodir(self):
+        raio_explosao = self.criar_explosao()
+        self.causar_dano(raio_explosao)
+        self.kill()
+
+
     def update(self, dt):
         self.tempo_decorrido +=  dt
         self.contador_tempo += dt
@@ -36,26 +62,7 @@ class Bomba(Sprite):
         if self.tempo_decorrido >= self.__tempo:
             self.explodir()
 
-    def explodir(self):
-        self.criar_explosao()
-        self.causar_dano()
-        self.kill() #remover bomba da tela
-
-    def criar_explosao(self):
-        raio_explosao = pygame.Rect(self.rect.centerx - self.__raiodeexplosao,
-                                    self.rect.centery - self.__raiodeexplosao,
-                                    self.__raiodeexplosao *2,
-                                    self.__raiodeexplosao *2)
-        pygame.draw.rect(self.mapa.tela, (220, 0, 0), raio_explosao, 2) #Desenha o raio de exploão na tela (Teste)
-    def causar_dano(self):
-        raio_explosao = pygame.Rect(self.rect.centerx - self.__raiodeexplosao,
-                                    self.rect.centery - self.__raiodeexplosao,
-                                    self.__raiodeexplosao *2,
-                                    self.__raiodeexplosao *2)
-        for bloco in self.mapa.blocos:
-            if raio_explosao.colliderect(bloco.rect) and bloco.destrutivel:
-                bloco.kill()
-                self.mapa.blocos.remove(bloco)
+   
     @property
     def posicaoBomba(self):
         return self.__posicaobomba
@@ -66,4 +73,5 @@ class Bomba(Sprite):
     def raio(self):
         return self.__raiodeexplosao
     
+
 

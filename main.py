@@ -5,6 +5,7 @@ from player import Player
 from inimigo import Inimigo
 from tkinter import *
 
+
 pygame.init()
 #Temos que ajustar a tela:
 root = Tk()
@@ -34,6 +35,7 @@ def main():
     tamanho_imagem_inimigo = (tamanho_bloco - 9, tamanho_bloco - 9)
     jogador = Player((60, 60), 100, 12, 3, mapa, tamanho= tamanho_imagem)
     inimigo = Inimigo((tamanho_bloco * 13, tamanho_bloco * 13), 100, 10, 'direcao', mapa, tamanho= tamanho_imagem_inimigo)
+    
 
     sprites = pygame.sprite.Group()
     sprites.add(jogador)
@@ -47,11 +49,13 @@ def main():
                
         jogador.update(dt)
         inimigo.update(jogador.posicao, dt)
+
         tela.fill(preto)
         mapa.desenhar(tela)
-        
+        mapa.bombas.update(dt)
+        mapa.bombas.draw(tela)
         sprites.draw(tela)
-
+    
         mapa.update(dt)
         
         pygame.display.flip()
