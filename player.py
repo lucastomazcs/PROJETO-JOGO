@@ -83,10 +83,21 @@ class Player(Sprite):
          
          #Comentei para parar a animaçao aleatoria
 
+    #Metodo para Jogador plantar a bomba, ajuste de tamanho, tempo e raio da bomba:
    def plantar_bomba(self):
-       bomba_pos = (self.rect.centerx, self.rect.centery)
-       bomba = Bomba(bomba_pos, 0.4, 25, (40,40),self.mapa)
+      
+       if self.image == self.images[0]:
+           bomba_pos = (self.rect.centerx, self.rect.bottom + 5)
+       elif self.image == self.images[1]:  # Imagem apontando para direita
+            bomba_pos = (self.rect.right + 5, self.rect.centery)
+       elif self.image == self.images[2]:  # Imagem apontando para cima
+            bomba_pos = (self.rect.centerx, self.rect.top - 5)
+       else:  # Imagem apontando para esquerda
+            bomba_pos = (self.rect.left - 5, self.rect.centery)
+        
+       bomba = Bomba(bomba_pos, 0.4, 25, (40, 40), self.mapa)
        self.mapa.bombas.add(bomba)
+      
 
     #teste de colisão com a bomba:
    def colisao_bomba(self):
