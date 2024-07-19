@@ -5,7 +5,7 @@ from bomba import Bomba
 
 class Player(Sprite):
    def __init__(self, posicao, vida, velocidade, range_bomba, mapa, tamanho):
-      super().__init__()
+      super().__init__() #Inicialização da Super classe: Sprite através de um metodo construtor
     
       self.__posicao = posicao
       self.__vida = vida
@@ -74,15 +74,6 @@ class Player(Sprite):
      
      self.__posicao = self.rect.topleft
    
-   def animacao(self, dt):
-     self.contador_tempo += dt
-     ''' if self.contador_tempo >= self.tempo_animacao:
-         self.contador_tempo = 0
-         self.image_index = (self.image_index + 1) % len(self.images)
-         self.image = self.images[self.image_index]''' 
-         
-         #Comentei para parar a animaçao aleatoria
-
     #Metodo para Jogador plantar a bomba, ajuste de tamanho, tempo e raio da bomba:
    def plantar_bomba(self):
       

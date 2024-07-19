@@ -74,7 +74,7 @@ class Mapa:
                 if bloco == 'W':
                     #Adicionar Sprites que faltam 
                     pygame.draw.rect(tela, self.branco, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
-                    self.blocos.add(Bloco('Blocos/bloco_lateral.png', x_pos, y_pos, self.tamanho_bloco)) #funcionalidade da colisão (teste)
+                    self.blocos.add(Bloco('Blocos/bloco_lateral4.png', x_pos, y_pos, self.tamanho_bloco)) #funcionalidade da colisão (teste)
                 elif bloco == 'B':
                     bloco_fixo = Bloco('Blocos/bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)
                     self.blocos.add(bloco_fixo)

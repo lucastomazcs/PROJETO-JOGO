@@ -33,7 +33,7 @@ def main():
     mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco, tela)
     tamanho_imagem = (tamanho_bloco - 9, tamanho_bloco - 9)
     tamanho_imagem_inimigo = (tamanho_bloco - 9, tamanho_bloco - 9)
-    jogador = Player((60, 60), 100, 12, 3, mapa, tamanho= tamanho_imagem)
+    jogador = Player((70, 70), 100, 12, 3, mapa, tamanho= tamanho_imagem)
     inimigo = Inimigo((tamanho_bloco * 13, tamanho_bloco * 13), 100, 10, 'direcao', mapa, tamanho= tamanho_imagem_inimigo)
     
 
