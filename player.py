@@ -29,7 +29,7 @@ class Player(Sprite):
       self.rect.topleft = posicao
 
       #Tempo de troca de animação:
-      self.tempo_animacao = 0.1
+      self.tempo_animacao = 0.01
       self.contador_tempo = 0
 
       #Variaveis de controle do tempo de plantar a bomba:
@@ -88,7 +88,7 @@ class Player(Sprite):
              self.colisao(bomba_colidida, eixo='y')
 
      self.__posicao = self.rect.topleft
-   
+
    def colisao(self, sprite, eixo):
        for bomba in self.mapa.bombas:
            if pygame.sprite.collide_rect(self, bomba):
