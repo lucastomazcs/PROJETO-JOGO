@@ -22,7 +22,7 @@ class Bomba(Sprite):
 
         self.image = self.images[self.image_index]
         self.rect = self.image.get_rect(topleft = posicaobomba)
-        self.tempo_animacao = 0.02
+        self.tempo_animacao = 0.3
         self.contador_tempo = 0
     
     def criar_explosao(self):
@@ -35,16 +35,16 @@ class Bomba(Sprite):
 
 
     def causar_dano(self, raio_explosao):
-        raio_explosao = pygame.Rect(self.rect.centerx - self.__raiodeexplosao,
-                                    self.rect.centery - self.__raiodeexplosao,
-                                    self.__raiodeexplosao * 2,
-                                    self.__raiodeexplosao * 2)
         for bloco in self.mapa.blocos:
             if raio_explosao.colliderect(bloco.rect) and bloco.destrutivel:
                 print(f"Colisão detectada com bloco destrutível: {bloco.rect}") #Testando a colisão
                 bloco.kill()
+                self.mapa.blocos.remove(bloco)
                 
-                
+        for jogador in self.mapa.jogadores:
+            if raio_explosao.colliderect(jogador.rect):
+                print("Colisão com jogador detectada")
+                jogador.morrer()
     
     def explodir(self):
         raio_explosao = self.criar_explosao()

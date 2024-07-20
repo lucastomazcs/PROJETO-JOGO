@@ -10,6 +10,9 @@ class Bloco(Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (x , y) # para definir a posição do retângulo (Bloco destrutivel) na tela
         self.destrutivel = destrutivel
+        self.jogadores = []
+
+
 
     def aumentar_tamanho(self,tamanho_novo):
         center = self.rect.center
@@ -61,20 +64,20 @@ class Mapa:
 
         self.blocos = pygame.sprite.Group()
         self.bombas = pygame.sprite.Group()
-    
-    def desenhar(self, tela):
-        #Limpa os blocos antes de redesenhá-los:
-        self.blocos.empty() 
+        self.criar_mapa()
 
+
+    def criar_mapa(self):
         #Desenha os blocos:
+
         for y, linha in enumerate(self.mapa):
             for x, bloco in enumerate(linha):
                 x_pos = x * self.tamanho_bloco
                 y_pos = y * self.tamanho_bloco
                 if bloco == 'W':
                     #Adicionar Sprites que faltam 
-                    pygame.draw.rect(tela, self.branco, pygame.Rect(x_pos, y_pos, self.tamanho_bloco, self.tamanho_bloco))
-                    self.blocos.add(Bloco('Blocos/bloco_lateral4.png', x_pos, y_pos, self.tamanho_bloco)) #funcionalidade da colisão (teste)
+                    bloco_lateral = Bloco('Blocos/bloco_lateral4.png', x_pos, y_pos, self.tamanho_bloco)
+                    self.blocos.add(bloco_lateral)
                 elif bloco == 'B':
                     bloco_fixo = Bloco('Blocos/bloco_fixo.png', x_pos, y_pos, self.tamanho_bloco)
                     self.blocos.add(bloco_fixo)
@@ -83,6 +86,9 @@ class Mapa:
                 elif bloco == 'D':
                     bloco_destrutivel = Bloco('Blocos/bloco_destrutivel.png', x_pos, y_pos, self.tamanho_bloco, destrutivel= True)
                     self.blocos.add(bloco_destrutivel)
+    
+
+    def desenhar(self, tela):
         self.blocos.draw(tela)
         self.bombas.draw(tela)
 
@@ -95,7 +101,7 @@ class Mapa:
             bloco.aumentar_tamanho(novo_tamanho)
 
     def obter_blocos_destrutiveis(self):
-        for bloco in self.mapa.blocos:
+        for bloco in self.blocos:
             if bloco.destrutivel:
                 print(f"Bloco destrutível encontrado: {bloco.rect}")
             

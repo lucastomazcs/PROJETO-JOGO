@@ -64,16 +64,46 @@ class Player(Sprite):
          movimento_x -= self.__velocidade
          self.image = self.images[0]
     
+   #Movimenta o Jogador no eixo X e checa colisões:
      self.rect.x += movimento_x
-     if pygame.sprite.spritecollideany(self, self.mapa.blocos) or pygame.sprite.spritecollideany(self, self.mapa.bombas):
-         self.rect.x -= movimento_x
-    
-     self.rect.y += movimento_y
-     if pygame.sprite.spritecollideany(self, self.mapa.blocos) or pygame.sprite.spritecollideany(self, self.mapa.bombas):
-            self.rect.y -= movimento_y
+     bloco_colidido = pygame.sprite.spritecollideany(self, self.mapa.blocos)  
+     bomba_colidida = pygame.sprite.spritecollideany(self, self.mapa.bombas) 
+     if bloco_colidido or bomba_colidida:
+         if bloco_colidido:
+             self.colisao(bloco_colidido, eixo='x')
+         if bomba_colidida:
+             self.colisao(bomba_colidida, eixo='x')
      
+    # Movimenta o jogador no eixo Y e checa colisões
+     self.rect.y += movimento_y
+     bloco_colidido = pygame.sprite.spritecollideany(self, self.mapa.blocos)  
+     bomba_colidida = pygame.sprite.spritecollideany(self, self.mapa.bombas) 
+     if bloco_colidido or bomba_colidida:
+         if bloco_colidido:
+             self.colisao(bloco_colidido, eixo='y')
+         if bomba_colidida:
+             self.colisao(bomba_colidida, eixo='y')
+
      self.__posicao = self.rect.topleft
    
+   def colisao(self, sprite, eixo):
+       for bomba in self.mapa.bombas:
+           if pygame.sprite.collide_rect(self, bomba):
+               print("Colisão com bomba detectada")
+       if eixo == 'x':
+           if self.rect.right > sprite.rect.left and self.rect.left < sprite.rect.right:
+               if self.rect.centerx < sprite.rect.centerx:
+                   self.rect.right = sprite.rect.left
+               else:
+                   self.rect.left = sprite.rect.right
+       if eixo == 'y':
+           if self.rect.bottom > sprite.rect.top and self.rect.top < sprite.rect.bottom:
+               if self.rect.centery < sprite.rect.centery:
+                   self.rect.bottom = sprite.rect.top
+               else:
+                   self.rect.top = sprite.rect.bottom
+
+
     #Metodo para Jogador plantar a bomba, ajuste de tamanho, tempo e raio da bomba:
    def plantar_bomba(self):
       
@@ -86,23 +116,19 @@ class Player(Sprite):
        else:  # Imagem apontando para esquerda
             bomba_pos = (self.rect.left - 5, self.rect.centery)
         
-       bomba = Bomba(bomba_pos, 0.4, 25, (40, 40), self.mapa)
+       bomba = Bomba(bomba_pos, 3.0, 25, (40, 40), self.mapa)
        self.mapa.bombas.add(bomba)
       
+ 
+   def morrer(self):
+       print("O jogador morreu!!")
+       self.kill()
 
-    #teste de colisão com a bomba:
-   def colisao_bomba(self):
-       for bomba in self.mapa.bombas:
-           if pygame.sprite.collide_rect(self, bomba):
-               print("Colisão com bomba detectada")
-                              
        
-     
-
    def update(self, dt):
      self.movimento() 
      #self.animacao(dt)
      keys = pygame.key.get_pressed()
      if keys[pygame.K_SPACE]:
          self.plantar_bomba()
-     self.colisao_bomba()
+     
