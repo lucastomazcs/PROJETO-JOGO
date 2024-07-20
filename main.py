@@ -31,11 +31,18 @@ def game_over_d(tela):
     tela.blit(game_over_imagem, (0,0))
     pygame.display.flip()
 
+def tela_vitoria(tela):
+    vitoria_imagem = pygame.image.load("telas/tela_vitoria.png")
+    vitoria_imagem = pygame.transform.scale(vitoria_imagem, (largura, altura))
+    tela.blit(vitoria_imagem, (0,0))
+    pygame.display.flip()
+
 def main():
 
     clock = pygame.time.Clock()
     rodando = True
     game_over = False
+    vitoria = False
 
     mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco, tela)
     tamanho_imagem = (tamanho_bloco - 9, tamanho_bloco - 9)
@@ -43,9 +50,11 @@ def main():
     jogador = Player((60, 60), 100, 2, 3, mapa, tamanho= tamanho_imagem)
     inimigo = Inimigo((tamanho_bloco * 14, tamanho_bloco * 14), 100, 10, 'direcao', mapa, tamanho = tamanho_imagem_inimigo)
     
+    
 
     mapa.jogadores = [jogador]
-
+    mapa.inimigos =  [inimigo]
+    
     sprites = pygame.sprite.Group()
     sprites.add(jogador)
     sprites.add(inimigo)
@@ -60,7 +69,13 @@ def main():
                     main() #Reinicia o jogo
                 elif game_over and event.key == pygame.K_q:
                     rodando = False
-        if not game_over:           
+                elif vitoria and event.key == pygame.K_r:
+                    main() #Reinicia o jogo
+                elif vitoria and event.key == pygame.K_q:
+                    rodando = False
+
+
+        if not game_over and not vitoria:           
             jogador.update(dt)
             inimigo.update(jogador.posicao, dt)
 
@@ -75,8 +90,14 @@ def main():
             pygame.display.flip()
             if not jogador.alive():
                 game_over = True
-        else:
+            if not inimigo.alive():
+                vitoria = True
+
+        elif game_over:
             game_over_d(tela)
+            clock.tick(60)
+        elif vitoria:
+            tela_vitoria(tela)
             clock.tick(60)
 
     pygame.quit()
