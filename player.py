@@ -31,7 +31,10 @@ class Player(Sprite):
       #Tempo de troca de animação:
       self.tempo_animacao = 0.1
       self.contador_tempo = 0
-    
+
+      #Variaveis de controle do tempo de plantar a bomba:
+      self.tempo_ultimo_plante = 0
+      self.intervalo_bomba = 3
      
 
    @property
@@ -104,20 +107,22 @@ class Player(Sprite):
                    self.rect.top = sprite.rect.bottom
 
 
-    #Metodo para Jogador plantar a bomba, ajuste de tamanho, tempo e raio da bomba:
-   def plantar_bomba(self):
-      
-       if self.image == self.images[0]:
-           bomba_pos = (self.rect.centerx, self.rect.bottom + 5)
-       elif self.image == self.images[1]:  # Imagem apontando para direita
-            bomba_pos = (self.rect.right + 5, self.rect.centery)
-       elif self.image == self.images[2]:  # Imagem apontando para cima
-            bomba_pos = (self.rect.centerx, self.rect.top - 5)
-       else:  # Imagem apontando para esquerda
-            bomba_pos = (self.rect.left - 5, self.rect.centery)
+    #Metodo para Jogador plantar a bomba, ajuste de tamanho, tempo, raio da bomba e o tempo de um plante para o outro:
+   def plantar_bomba(self, dt):
+       current_time = pygame.time.get_ticks() / 1000 #Obtem o tempo atual em segundos
+       if current_time - self.tempo_ultimo_plante >= self.intervalo_bomba:
+           if self.image == self.images[0]:
+                bomba_pos = (self.rect.centerx, self.rect.bottom + 5)
+           elif self.image == self.images[1]:  # Imagem apontando para direita
+                bomba_pos = (self.rect.right + 5, self.rect.centery)
+           elif self.image == self.images[2]:  # Imagem apontando para cima
+                bomba_pos = (self.rect.centerx, self.rect.top - 5)
+           else:  # Imagem apontando para esquerda
+                bomba_pos = (self.rect.left - 5, self.rect.centery)
         
-       bomba = Bomba(bomba_pos, 3.0, 25, (40, 40), self.mapa)
-       self.mapa.bombas.add(bomba)
+           bomba = Bomba(bomba_pos, 3.0, 25, (40, 40), self.mapa)
+           self.mapa.bombas.add(bomba)
+           self.tempo_ultimo_plante = current_time #Atualiza o tempo da ultima bomba plantada
       
  
    def morrer(self):
@@ -130,5 +135,5 @@ class Player(Sprite):
      #self.animacao(dt)
      keys = pygame.key.get_pressed()
      if keys[pygame.K_SPACE]:
-         self.plantar_bomba()
+         self.plantar_bomba(dt)
      
