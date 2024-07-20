@@ -41,11 +41,12 @@ def main():
     tamanho_imagem = (tamanho_bloco - 9, tamanho_bloco - 9)
     tamanho_imagem_inimigo = (tamanho_bloco - 9, tamanho_bloco - 9)
     jogador = Player((60, 60), 100, 2, 3, mapa, tamanho= tamanho_imagem)
-    inimigo = Inimigo((tamanho_bloco * 13, tamanho_bloco * 13), 100, 10, 'direcao', mapa, tamanho= tamanho_imagem_inimigo)
+    inimigo = Inimigo((725, 700), 100, 10, 'direcao', mapa, tamanho= tamanho_imagem_inimigo)
     
 
     mapa.jogadores = [jogador]
-
+    mapa.inimigos =  [inimigo]
+    
     sprites = pygame.sprite.Group()
     sprites.add(jogador)
     sprites.add(inimigo)

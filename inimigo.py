@@ -38,7 +38,11 @@ class Inimigo(Sprite):
         #Tempo de troca de animação:
         self.tempo_animacao = 0.1
         self.contador_tempo = 0
-    
+
+        #Inicializar vidas:
+        self.vidas = 3
+
+
     @property
     def posicao(self):
         return self.__posicao
@@ -84,6 +88,15 @@ class Inimigo(Sprite):
     def plantar_bomba(self):
         #Fazer o inimigo plantar bombas
         pass
+    
+    def sofrer_dano(self):
+       self.vidas -= 1
+       if self.vidas <=0:
+          self.morrer()
+
+    def morrer(self):
+       print("O Inimigo morreu!!")
+       self.kill()
 
     def update(self, posicao_jogador,  dt: float):
        posicao_antiga = self.rect.bottomright
@@ -94,3 +107,13 @@ class Inimigo(Sprite):
        #Atualiza animação quando inimigo se move:
        if self.rect.topleft!= posicao_antiga:
         self.animacao(dt)
+
+        #Checar colisão com bombas:
+       self.checar_colisão_bombas()
+    
+    def checar_colisão_bombas(self):
+       for bomba in self.mapa.bombas:
+          if pygame.sprite.collide_rect(self, bomba):
+             print("Inimigo atingido!")
+             self.sofrer_dano()
+             break
