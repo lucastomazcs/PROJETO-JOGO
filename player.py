@@ -29,7 +29,7 @@ class Player(Sprite):
       self.rect.topleft = posicao
 
       #Tempo de troca de animação:
-      self.tempo_animacao = 0.1
+      self.tempo_animacao = 0.01
       self.contador_tempo = 0
     
      
@@ -75,13 +75,7 @@ class Player(Sprite):
      self.__posicao = self.rect.topleft
    
    def animacao(self, dt):
-     self.contador_tempo += dt
-     ''' if self.contador_tempo >= self.tempo_animacao:
-         self.contador_tempo = 0
-         self.image_index = (self.image_index + 1) % len(self.images)
-         self.image = self.images[self.image_index]''' 
-         
-         #Comentei para parar a animaçao aleatoria
+     self.contador_tempo += dt 
 
     #Metodo para Jogador plantar a bomba, ajuste de tamanho, tempo e raio da bomba:
    def plantar_bomba(self):

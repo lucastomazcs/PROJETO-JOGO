@@ -7,7 +7,7 @@ from tkinter import *
 
 
 pygame.init()
-#Temos que ajustar a tela:
+#ajusta o tamanho da tela de acordo com o monitor do usuário
 root = Tk()
 monitor_height = root.winfo_screenheight()
 monitor_width = root.winfo_screenwidth()
@@ -29,14 +29,13 @@ def main():
 
     clock = pygame.time.Clock()
     rodando = True
-
+    
     mapa = Mapa(num_blocos_x, num_blocos_y, tamanho_bloco, tela)
     tamanho_imagem = (tamanho_bloco - 9, tamanho_bloco - 9)
     tamanho_imagem_inimigo = (tamanho_bloco - 9, tamanho_bloco - 9)
     jogador = Player((60, 60), 100, 12, 3, mapa, tamanho= tamanho_imagem)
-    inimigo = Inimigo((tamanho_bloco * 13, tamanho_bloco * 13), 100, 10, 'direcao', mapa, tamanho= tamanho_imagem_inimigo)
+    inimigo = Inimigo((tamanho_bloco * 14, tamanho_bloco * 14), 100, 10, 'direcao', mapa, tamanho= tamanho_imagem_inimigo)
     
-
     sprites = pygame.sprite.Group()
     sprites.add(jogador)
     sprites.add(inimigo)
