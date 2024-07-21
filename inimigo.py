@@ -93,10 +93,10 @@ class Inimigo(Sprite):
         #Fazer o inimigo plantar bombas
         pass
     
-    def sofrer_dano(self):
+    '''def sofrer_dano(self):
        self.vidas -= 1
        if self.vidas <=0:
-          self.morrer()
+          self.morrer()'''
 
     def morrer(self):
        print("O Inimigo morreu!!")
@@ -109,12 +109,12 @@ class Inimigo(Sprite):
        self.movimento(posicao_jogador, dt)
 
         #Checar colisão com bombas:
-       self.checar_colisão_bombas()
+       '''self.checar_colisão_bombas()'''
     
-    def checar_colisão_bombas(self):
+    '''def checar_colisão_bombas(self):
        for bomba in self.mapa.bombas:
           if pygame.sprite.collide_rect(self, bomba):
              print("Inimigo atingido!")
              self.sofrer_dano()
-             break
+             break'''
 

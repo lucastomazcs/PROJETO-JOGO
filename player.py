@@ -112,15 +112,15 @@ class Player(Sprite):
        current_time = pygame.time.get_ticks() / 1000 #Obtem o tempo atual em segundos
        if current_time - self.tempo_ultimo_plante >= self.intervalo_bomba:
            if self.image == self.images[0]:
-                bomba_pos = (self.rect.centerx, self.rect.bottom + 5)
+                bomba_pos = (self.rect.centerx, self.rect.bottom + self.rect.height // 2)
            elif self.image == self.images[1]:  # Imagem apontando para direita
-                bomba_pos = (self.rect.right + 5, self.rect.centery)
+                bomba_pos = (self.rect.right + self.rect.width // 2 , self.rect.centery)
            elif self.image == self.images[2]:  # Imagem apontando para cima
-                bomba_pos = (self.rect.centerx, self.rect.top - 5)
+                bomba_pos = (self.rect.centerx, self.rect.top - self.rect.height // 2)
            else:  # Imagem apontando para esquerda
-                bomba_pos = (self.rect.left - 5, self.rect.centery)
+                bomba_pos = (self.rect.left - self.rect.width // 2, self.rect.centery)
         
-           bomba = Bomba(bomba_pos, 4.0, 25, (40, 40), self.mapa)
+           bomba = Bomba(bomba_pos, 4.0, 15, (40, 40), self.mapa)
            self.mapa.bombas.add(bomba)
            self.tempo_ultimo_plante = current_time #Atualiza o tempo da ultima bomba plantada
       

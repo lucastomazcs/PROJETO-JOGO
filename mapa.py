@@ -64,6 +64,7 @@ class Mapa:
 
         self.blocos = pygame.sprite.Group()
         self.bombas = pygame.sprite.Group()
+        self.explosoes = pygame.sprite.Group()
         self.criar_mapa()
 
 

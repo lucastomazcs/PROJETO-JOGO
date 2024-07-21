@@ -1,5 +1,35 @@
 import pygame
-from pygame.sprite import Sprite
+from pygame.sprite import Sprite, Group
+
+class Explosão(Sprite):
+    
+    def __init__(self, posicao, tamanho, tempo_animacao, mapa) -> None:
+        super().__init__()
+
+        self.images = [
+            pygame.transform.scale(pygame.image.load('Explosão/explosao.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Explosão/explosao2.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Explosão/explosao3.png').convert_alpha(), tamanho)
+
+        ]
+
+        self.image_index = 0
+        self.image = self.images[self.image_index]
+        self.rect = self.image.get_rect(center = posicao)
+        self.tempo_animacao = tempo_animacao
+        self.contador_tempo = 0
+        self.mapa = mapa
+
+
+    def update(self, dt):
+        self.contador_tempo += dt
+        if self.contador_tempo >= self.tempo_animacao:
+            self.contador_tempo = 0
+            self.image_index += 1
+            if self.image_index < len(self.images):
+                self.image = self.images[self.image_index]
+            else:
+                self.kill()
 
 class Bomba(Sprite):
     
@@ -25,16 +55,15 @@ class Bomba(Sprite):
         self.tempo_animacao = 0.7
         self.contador_tempo = 0
     
-    def criar_explosao(self):
-        raio_explosao = pygame.Rect(self.rect.centerx - self.__raiodeexplosao,
-                                    self.rect.centery - self.__raiodeexplosao,
-                                    self.__raiodeexplosao * 2,
-                                    self.__raiodeexplosao * 2)
-        pygame.draw.rect(self.mapa.tela, (240, 0, 0), raio_explosao, 2)
-        return raio_explosao
+    def criar_explosao(self): 
+        explosao = Explosão(self.rect.center, (self.__raiodeexplosao * 2, self.__raiodeexplosao * 2), 0.09, self.mapa)
+        self.mapa.explosoes.add(explosao)
 
+        return explosao
+    
+    def causar_dano(self, explosao):
+        raio_explosao = explosao.rect
 
-    def causar_dano(self, raio_explosao):
         for bloco in self.mapa.blocos:
             if raio_explosao.colliderect(bloco.rect) and bloco.destrutivel:
                 print(f"Colisão detectada com bloco destrutível: {bloco.rect}") #Testando a colisão
@@ -53,8 +82,8 @@ class Bomba(Sprite):
                 
     
     def explodir(self):
-        raio_explosao = self.criar_explosao()
-        self.causar_dano(raio_explosao)
+        explosao= self.criar_explosao()
+        self.causar_dano(explosao)
         self.kill()
 
     def update(self, dt):
