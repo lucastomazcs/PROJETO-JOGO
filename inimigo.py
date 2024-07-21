@@ -121,14 +121,14 @@ class Inimigo(Sprite):
        self.movimento(posicao_jogador, dt)
 
         #Checar colisão com bombas:
-       '''self.checar_colisão_bombas()'''
+       self.checar_colisão_bombas()
     
-    '''def checar_colisão_bombas(self):
+    def checar_colisão_bombas(self):
        for bomba in self.mapa.bombas:
           if pygame.sprite.collide_rect(self, bomba):
              print("Inimigo atingido!")
              self.sofrer_dano()
-             break'''
+             break
 
     def colisao(self, sprite, eixo):
         if eixo == 'x':

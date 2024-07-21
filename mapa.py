@@ -11,7 +11,7 @@ class Bloco(Sprite):
         self.rect.topleft = (x , y) # para definir a posição do retângulo (Bloco destrutivel) na tela
         self.destrutivel = destrutivel
         self.jogadores = []
-
+        self.inimigos = []
 
 
     def aumentar_tamanho(self,tamanho_novo):

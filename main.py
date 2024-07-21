@@ -52,6 +52,7 @@ def main():
     
 
     mapa.jogadores = [jogador]
+    mapa.inimigos = [inimigo]
 
     sprites = pygame.sprite.Group()
     sprites.add(jogador)
