@@ -52,7 +52,7 @@ class Bomba(Sprite):
 
         self.image = self.images[self.image_index]
         self.rect = self.image.get_rect(topleft = posicaobomba)
-        self.tempo_animacao = 0.7
+        self.tempo_animacao = 0.3
         self.contador_tempo = 0
     
     def criar_explosao(self): 
@@ -74,17 +74,12 @@ class Bomba(Sprite):
             if raio_explosao.colliderect(jogador.rect):
                 print("Colisão com jogador detectada")
                 jogador.morrer()
-        
-        for inimigo in self.mapa.inimigos:
-            if raio_explosao.colliderect(inimigo.rect):
-                print("Colisão com inimigo detectada")
-                inimigo.morrer()
-                
     
     def explodir(self):
         explosao= self.criar_explosao()
         self.causar_dano(explosao)
         self.kill()
+
 
     def update(self, dt):
         self.tempo_decorrido +=  dt

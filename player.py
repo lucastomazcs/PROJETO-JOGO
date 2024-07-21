@@ -120,7 +120,9 @@ class Player(Sprite):
            else:  # Imagem apontando para esquerda
                 bomba_pos = (self.rect.left - self.rect.width // 2, self.rect.centery)
         
+
            bomba = Bomba(bomba_pos, 4.0, 15, (40, 40), self.mapa)
+
            self.mapa.bombas.add(bomba)
            self.tempo_ultimo_plante = current_time #Atualiza o tempo da ultima bomba plantada
       

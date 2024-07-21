@@ -37,7 +37,7 @@ class Mapa:
         self.num_blocos_x = num_blocos_x
         self.num_blocos_y = num_blocos_y
         self.tamanho_bloco = tamanho_bloco
-        
+
         
         #definindo mapa
         self.mapa = [
@@ -93,7 +93,6 @@ class Mapa:
     def desenhar(self, tela):
         self.blocos.draw(tela)
         self.bombas.draw(tela)
-        
 
     def update(self, dt):
         self.bombas.update(dt)
