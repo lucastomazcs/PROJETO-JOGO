@@ -59,7 +59,10 @@ class Inimigo(Sprite):
         return self.__direcao
 
     def movimento(self, posicao_player, dt: float):
-        # Calcula a direção para o jogador
+        
+        posicao_original = self.rect.topleft
+
+        #Calcula a direção para o jogador:
         delta_x = posicao_player[0] - self.rect.centerx
         delta_y = posicao_player[1] - self.rect.centery
         distancia = math.hypot(delta_x, delta_y)
@@ -76,14 +79,14 @@ class Inimigo(Sprite):
 
         # Checa colisões com blocos e bombas no eixo X
         if pygame.sprite.spritecollideany(self, self.mapa.blocos) or pygame.sprite.spritecollideany(self, self.mapa.bombas):
-            self.rect.x -= direcao_x
+            self.rect.x = posicao_original[0]
 
         # Tentativa de movimento no eixo Y
         self.rect.y += direcao_y
         
         # Checa colisões com blocos e bombas no eixo Y
         if pygame.sprite.spritecollideany(self, self.mapa.blocos) or pygame.sprite.spritecollideany(self, self.mapa.bombas):
-            self.rect.y -= direcao_y
+            self.rect.y = posicao_original[1]
 
         self.__posicao = self.rect.topleft
 
