@@ -63,13 +63,17 @@ class Bomba(Sprite):
     
     def causar_dano(self, explosao):
         raio_explosao = explosao.rect
+        bloco_destruido = False
+        inimigo_atingido = set()
 
         for bloco in self.mapa.blocos:
             if raio_explosao.colliderect(bloco.rect) and bloco.destrutivel:
                 print(f"Colisão detectada com bloco destrutível: {bloco.rect}") #Testando a colisão
                 bloco.kill()
                 self.mapa.blocos.remove(bloco)
-                
+                bloco_destruido = True
+                break
+        
         for jogador in self.mapa.jogadores:
             if raio_explosao.colliderect(jogador.rect):
                 print("Colisão com jogador detectada")
@@ -78,7 +82,8 @@ class Bomba(Sprite):
         for inimigo in self.mapa.inimigos:
             if raio_explosao.colliderect(inimigo.rect):
                 print("Colisão com jogador detectada")
-                inimigo.morrer()
+                inimigo.sofrer_dano()
+                
     
     def explodir(self):
         explosao= self.criar_explosao()

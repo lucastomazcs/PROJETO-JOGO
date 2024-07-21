@@ -76,7 +76,7 @@ def main():
 
         if not game_over and not vitoria:           
             jogador.update(dt)
-            inimigo.update(jogador.posicao, dt)
+            inimigo.update(jogador.rect.topleft, dt)
 
             tela.fill(preto)
             mapa.desenhar(tela)

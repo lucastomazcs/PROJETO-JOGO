@@ -121,7 +121,7 @@ class Player(Sprite):
                 bomba_pos = (self.rect.left - self.rect.width // 2, self.rect.centery)
         
 
-           bomba = Bomba(bomba_pos, 4.0, 25, (40, 40), self.mapa)
+           bomba = Bomba(bomba_pos, 4.0, 35, (40, 40), self.mapa)
 
            self.mapa.bombas.add(bomba)
            self.tempo_ultimo_plante = current_time #Atualiza o tempo da ultima bomba plantada
