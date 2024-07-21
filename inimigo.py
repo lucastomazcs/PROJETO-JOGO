@@ -95,7 +95,7 @@ class Inimigo(Sprite):
 
         # Movimenta o inimigo no eixo Y
         self.rect.y += direcao_y * self.velocidade * dt
-
+        
         # Checa colisões com blocos e bombas no eixo Y
         if pygame.sprite.spritecollideany(self, self.mapa.blocos) or pygame.sprite.spritecollideany(self, self.mapa.bombas):
             # Reverte movimento no eixo Y
@@ -116,23 +116,6 @@ class Inimigo(Sprite):
             else:
                 self.rect.top = sprite.rect.bottom
 
-    '''def sofrer_dano(self):
-       self.vidas -= 1
-       if self.vidas <=0:
-          self.morrer()
-
-    def morrer(self):
-       print("O Inimigo morreu!!")
-       self.kill()
-       self.checar_colisão_bombas()
-    
-    def checar_colisão_bombas(self):
-        for bomba in self.mapa.bombas:
-        if pygame.sprite.collide_rect(self, bomba):
-            print("Inimigo atingido!")
-            self.sofrer_dano()
-        break'''
-
     def animacao(self, dt: float):
         self.contador_tempo += dt
         if self.contador_tempo >= self.tempo_animacao:
@@ -141,9 +124,28 @@ class Inimigo(Sprite):
             self.image = self.images[self.image_index]
 
     def update(self, posicao_player, dt: float):
-        # print(f"Update chamado com posicao_player: {posicao_player}, dt: {dt}") #Debug
-        # Atualiza a posição do inimigo
+        #print(f"Update chamado com posicao_player: {posicao_player}, dt: {dt}") #Debug
+        #Atualiza a posição do inimigo
         self.movimento(posicao_player, dt)
-        # Atualiza animação quando inimigo se move:
+        #Atualiza animação quando inimigo se move:
         self.animacao(dt)
-        print(self.velocidade)  # Debug
+        print(self.velocidade) #Debug
+    
+    '''def sofrer_dano(self):
+       self.vidas -= 1
+       if self.vidas <=0:
+          self.morrer()'''
+
+    def morrer(self):
+       print("O Inimigo morreu!!")
+       self.kill()
+
+       '''self.checar_colisão_bombas()'''
+    
+    '''def checar_colisão_bombas(self):
+       for bomba in self.mapa.bombas:
+          if pygame.sprite.collide_rect(self, bomba):
+             print("Inimigo atingido!")
+             self.sofrer_dano()
+             break'''
+
