@@ -26,13 +26,13 @@ pygame.display.set_caption("Bomberman")
 preto = (0,0,0)
 
 def game_over_d(tela):
-    game_over_imagem = pygame.image.load("telas/tela_game_over.png")
+    game_over_imagem = pygame.image.load("telas/Tela_Game_Overr.png")
     game_over_imagem = pygame.transform.scale(game_over_imagem,(largura, altura))
     tela.blit(game_over_imagem, (0,0))
     pygame.display.flip()
 
 def tela_vitoria(tela):
-    vitoria_imagem = pygame.image.load("telas/tela_vitoria.png")
+    vitoria_imagem = pygame.image.load("telas/tela_Vitoriaa.png")
     vitoria_imagem = pygame.transform.scale(vitoria_imagem, (largura, altura))
     tela.blit(vitoria_imagem, (0,0))
     pygame.display.flip()
@@ -48,7 +48,7 @@ def main():
     tamanho_imagem = (tamanho_bloco - 9, tamanho_bloco - 9)
     tamanho_imagem_inimigo = (tamanho_bloco - 9, tamanho_bloco - 9)
     jogador = Player((60, 60), 100, 2, 3, mapa, tamanho= tamanho_imagem)
-    inimigo = Inimigo((tamanho_bloco * 14, tamanho_bloco * 14), 100, 10, 'direcao', mapa, tamanho = tamanho_imagem_inimigo)
+    inimigo = Inimigo((tamanho_bloco * 14, tamanho_bloco * 14), 3, 6, 'direcao', mapa, tamanho = tamanho_imagem_inimigo)
 
     mapa.jogadores = [jogador]
     mapa.inimigos = [inimigo]
