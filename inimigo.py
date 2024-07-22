@@ -49,6 +49,10 @@ class Inimigo(Sprite):
         # Tempo de troca de animação
         self.tempo_animacao = 1
         self.contador_tempo = 0
+        self.tempo_ultimo_plante = 0
+        self.intervalo_bomba = 3
+        self.minhas_bombas = []
+
 
     @property
     def posicao(self):
@@ -98,17 +102,37 @@ class Inimigo(Sprite):
 
         self.__posicao = self.rect.topleft
 
+        if self.caminho_bloqueado():
+            self.plantar_bomba()
+
         # Debugging output
         # print(f"Direção X: {direcao_x}, Direção Y: {direcao_y}")
         # print(f"Posição: {self.rect.topleft}")
 
-    def plantar_bomba(self):
-        # Fazer o inimigo plantar bombas
-        bomba_inimigo = Bomba(self.rect.topleft, tempo=3.0, raiodeexplosao=25, mapa=self.mapa)
-        self.mapa.bombas.add(bomba_inimigo)
-        print("Inimigo plantou bomba!")
+    def colidir_propria_bomba(self):
+        for bomba in self.minhas_bombas:
+            if self.rect.colliderect(bomba.rect):
+                return True
+        return False
+    
+    def caminho_bloqueado(self):
+        for bloco in self.mapa.blocos:
+            if bloco.destrutivel and self.rect.colliderect(bloco.rect.inflate(20,20)):
+                return True
+        return False
+    
 
-    def sofrer_dano(self):
+    def plantar_bomba(self):
+        current_time = pygame.time.get_ticks() / 1000
+        if current_time - self.tempo_ultimo_plante >= self.intervalo_bomba:
+            bomba = Bomba(self.rect.topleft, 2, 20, (40, 40), self.mapa, dono= self)
+            self.minhas_bombas.append(bomba)
+            self.mapa.bombas.add(bomba)
+            self.tempo_ultimo_plante = current_time
+
+    def sofrer_dano(self, fonte):
+        if fonte in self.minhas_bombas:
+            return
         self.__vida -= 1
         print(f"Inimigo sofreu dano. Vidas restantes: {self.__vida}")
         if self.__vida <= 0:

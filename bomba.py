@@ -1,9 +1,9 @@
 import pygame
 from pygame.sprite import Sprite, Group
 
-class Explosão(Sprite):
+class Explosao(Sprite):
     
-    def __init__(self, posicao, tamanho, tempo_animacao, mapa) -> None:
+    def __init__(self, posicao, tamanho, tempo_animacao, mapa, dono = None):
         super().__init__()
 
         self.images = [
@@ -19,7 +19,7 @@ class Explosão(Sprite):
         self.tempo_animacao = tempo_animacao
         self.contador_tempo = 0
         self.mapa = mapa
-
+        self.dono = dono
 
     def update(self, dt):
         self.contador_tempo += dt
@@ -29,11 +29,20 @@ class Explosão(Sprite):
             if self.image_index < len(self.images):
                 self.image = self.images[self.image_index]
             else:
+                self.causar_dano()
                 self.kill()
+            
+    def causar_dano(self):
+        for sprite in pygame.sprite.spritecollide(self, self.mapa.jogadores, False):
+            sprite.sofrer_dano(self)
+        for sprite in pygame.sprite.spritecollide(self, self.mapa.inimigos, False):
+            if sprite != self.dono:
+                sprite.sofrer_dano(self)
+
 
 class Bomba(Sprite):
     
-    def __init__(self, posicaobomba, tempo, raiodeexplosao, tamanho, mapa):
+    def __init__(self, posicaobomba, tempo, raiodeexplosao, tamanho, mapa, dono = None):
         pygame.sprite.Sprite.__init__(self)
 
         self.__posicaobomba = posicaobomba
@@ -41,6 +50,7 @@ class Bomba(Sprite):
         self.__raiodeexplosao = raiodeexplosao
         self.tempo_decorrido = 0
         self.mapa = mapa
+        self.dono = dono
 
         self.image_index = 0
         self.images = [
@@ -56,7 +66,7 @@ class Bomba(Sprite):
         self.contador_tempo = 0
     
     def criar_explosao(self): 
-        explosao = Explosão(self.posicaoBomba, (self.__raiodeexplosao * 5, self.__raiodeexplosao * 5), 0.3, self.mapa)
+        explosao = Explosao(self.posicaoBomba, (self.__raiodeexplosao * 5, self.__raiodeexplosao * 5), 0.3, self.mapa, dono= self.dono)
 
         self.mapa.explosoes.add(explosao)
 
@@ -65,7 +75,6 @@ class Bomba(Sprite):
     def causar_dano(self, explosao):
         raio_explosao = explosao.rect
         bloco_destruido = False
-        inimigo_atingido = set()
 
         for bloco in self.mapa.blocos:
             if raio_explosao.colliderect(bloco.rect) and bloco.destrutivel:
@@ -82,8 +91,9 @@ class Bomba(Sprite):
 
         for inimigo in self.mapa.inimigos:
             if raio_explosao.colliderect(inimigo.rect):
-                print("Colisão com jogador detectada")
-                inimigo.sofrer_dano()
+                if inimigo != self.dono:
+                    print("Colisão com jogador detectada")
+                    inimigo.sofrer_dano(self)
                 
     
     def explodir(self):
