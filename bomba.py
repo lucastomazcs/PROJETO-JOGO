@@ -1,5 +1,6 @@
 import pygame
 from pygame.sprite import Sprite, Group
+import math
 
 class Explosao(Sprite):
     
@@ -76,13 +77,30 @@ class Bomba(Sprite):
         raio_explosao = explosao.rect
         bloco_destruido = False
 
+        #Definindo centro da explosão:
+        centro_explosao = raio_explosao.center
+
+        #Identificando o blco mais proximo do centro da explosão:
+        bloco_mais_proximo = None
+        menor_distancia = float('inf')
+
         for bloco in self.mapa.blocos:
-            if raio_explosao.colliderect(bloco.rect) and bloco.destrutivel:
-                print(f"Colisão detectada com bloco destrutível: {bloco.rect}") #Testando a colisão
-                bloco.kill()
-                self.mapa.blocos.remove(bloco)
-                bloco_destruido = True
-                break
+            if bloco.destrutivel:
+                bloco_centro = bloco.rect.center
+                distancia = math.hypot(bloco_centro[0] - centro_explosao[0], bloco_centro[1] - centro_explosao[1])
+
+                if distancia <= self.__raiodeexplosao + bloco.rect.width / 2:
+                    if raio_explosao.colliderect(bloco.rect):
+                        if distancia < menor_distancia:
+                            menor_distancia = distancia
+                            bloco_mais_proximo = bloco
+        if bloco_mais_proximo:
+            print(f"Colisão detectada com bloco destrutível: {bloco.rect}") #Testando a colisão
+            bloco_mais_proximo.kill()
+            self.mapa.blocos.remove(bloco_mais_proximo)
+            bloco_destruido = True
+            
+            
                 
         for jogador in self.mapa.jogadores:
             if raio_explosao.colliderect(jogador.rect):
