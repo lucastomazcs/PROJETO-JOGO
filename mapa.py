@@ -25,8 +25,7 @@ class Bloco(Sprite):
         self.image = pygame.transform.scale(self.image, (novo_tamanho, novo_tamanho))
         self.rect = self.image.get_rect(topleft = self.rect.topleft)
 
-class Mapa:
-    
+class Mapa:    
     def __init__(self, num_blocos_x, num_blocos_y, tamanho_bloco, tela):
         self.branco = (255,255,255)
         self.preto = (0,0,0)
@@ -56,8 +55,7 @@ class Mapa:
             "WDDDEEEEDDDDDDW",
             "WEBEBEBEBEBEBEW",
             "WEEEDDDDDDDEEEW",
-            "WWWWWWWWWWWWWWW"
-            
+            "WWWWWWWWWWWWWWW"  
 
         ]
         
@@ -67,10 +65,9 @@ class Mapa:
         self.explosoes = pygame.sprite.Group()
         self.criar_mapa()
         
-
+        
     def criar_mapa(self):
         #Desenha os blocos:
-
         for y, linha in enumerate(self.mapa):
             for x, bloco in enumerate(linha):
                 x_pos = x * self.tamanho_bloco

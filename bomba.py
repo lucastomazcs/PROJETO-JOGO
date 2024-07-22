@@ -3,7 +3,6 @@ from pygame.sprite import Sprite, Group
 import math
 
 class Explosao(Sprite):
-    
     def __init__(self, posicao, tamanho, tempo_animacao, mapa, dono = None):
         super().__init__()
 
@@ -42,7 +41,6 @@ class Explosao(Sprite):
 
 
 class Bomba(Sprite):
-    
     def __init__(self, posicaobomba, tempo, raiodeexplosao, tamanho, mapa, dono = None):
         pygame.sprite.Sprite.__init__(self)
 
@@ -94,13 +92,12 @@ class Bomba(Sprite):
                         if distancia < menor_distancia:
                             menor_distancia = distancia
                             bloco_mais_proximo = bloco
+                            
         if bloco_mais_proximo:
             print(f"Colisão detectada com bloco destrutível: {bloco.rect}") #Testando a colisão
             bloco_mais_proximo.kill()
             self.mapa.blocos.remove(bloco_mais_proximo)
             bloco_destruido = True
-            
-            
                 
         for jogador in self.mapa.jogadores:
             if raio_explosao.colliderect(jogador.rect):

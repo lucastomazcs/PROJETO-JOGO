@@ -38,7 +38,6 @@ def tela_vitoria(tela):
     pygame.display.flip()
 
 def main():
-
     clock = pygame.time.Clock()
     rodando = True
     game_over = False
