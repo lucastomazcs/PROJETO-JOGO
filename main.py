@@ -49,7 +49,6 @@ def main():
     tamanho_imagem_inimigo = (tamanho_bloco - 9, tamanho_bloco - 9)
     jogador = Player((60, 60), 100, 2, 3, mapa, tamanho= tamanho_imagem)
     inimigo = Inimigo((tamanho_bloco * 14, tamanho_bloco * 14), 100, 10, 'direcao', mapa, tamanho = tamanho_imagem_inimigo)
-    
 
     mapa.jogadores = [jogador]
     mapa.inimigos = [inimigo]
@@ -59,7 +58,7 @@ def main():
     sprites.add(inimigo)
 
     while rodando:
-        dt = clock.tick(60) / 1000
+        dt = clock.tick(60) / 100
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                rodando = False
@@ -97,6 +96,7 @@ def main():
                 game_over = True
             if not inimigo.alive():
                 vitoria = True
+                
 
         elif game_over:
             game_over_d(tela)

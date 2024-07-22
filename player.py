@@ -19,6 +19,7 @@ class Player(Sprite):
 
           pygame.transform.scale(pygame.image.load('Bomberman/bomberman01.png').convert_alpha(), tamanho),
           pygame.transform.scale(pygame.image.load('Bomberman/bomberman02.png').convert_alpha(), tamanho),
+          pygame.transform.scale(pygame.image.load('Bomberman/bomberman03.png').convert_alpha(), tamanho),
           pygame.transform.scale(pygame.image.load('Bomberman/bomberman03.png').convert_alpha(), tamanho)
       ]
       self.image_index = 0
@@ -65,7 +66,7 @@ class Player(Sprite):
          self.image = self.images[1]
      if keys[pygame.K_a]:
          movimento_x -= self.__velocidade
-         self.image = self.images[0]
+         self.image = self.images[3]
     
    #Movimenta o Jogador no eixo X e checa colisões:
      self.rect.x += movimento_x
@@ -112,20 +113,27 @@ class Player(Sprite):
        current_time = pygame.time.get_ticks() / 1000 #Obtem o tempo atual em segundos
        if current_time - self.tempo_ultimo_plante >= self.intervalo_bomba:
            if self.image == self.images[0]:
-                bomba_pos = (self.rect.centerx, self.rect.bottom + self.rect.height // 2)
+                bomba_pos = (self.rect.centerx - 25, (self.rect.bottom + self.rect.height // 2) - 10)
            elif self.image == self.images[1]:  # Imagem apontando para direita
-                bomba_pos = (self.rect.right + self.rect.width // 2 , self.rect.centery)
+                bomba_pos = ((self.rect.right + self.rect.width // 2) - 20, self.rect.centery - 19)
            elif self.image == self.images[2]:  # Imagem apontando para cima
-                bomba_pos = (self.rect.centerx, self.rect.top - self.rect.height // 2)
-           else:  # Imagem apontando para esquerda
-                bomba_pos = (self.rect.left - self.rect.width // 2, self.rect.centery)
+                bomba_pos = (self.rect.centerx - 20, (self.rect.top - self.rect.height // 2) - 20)
+           elif self.image == self.images[3]:  # Imagem apontando para esquerda
+                bomba_pos = (self.rect.left - 40, self.rect.centery - 20)
+           else:
+               print('ue')
+                
         
 
-           bomba = Bomba(bomba_pos, 4.0, 35, (40, 40), self.mapa)
+           bomba = Bomba(bomba_pos, 4.0, 20, (40, 40), self.mapa)
 
            self.mapa.bombas.add(bomba)
            self.tempo_ultimo_plante = current_time #Atualiza o tempo da ultima bomba plantada
       
+   def sofrer_dano(self):
+        self.__vida -= 1
+        if self.__vida <= 0:
+            self.morrer()
  
    def morrer(self):
        print("O jogador morreu!!")

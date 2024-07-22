@@ -43,7 +43,7 @@ class Mapa:
         self.mapa = [
             # 'W' = paredes, 'E' = espaços vazios e 'B' = bloco indestrutível e 'D' = bloco destrutível
             "WWWWWWWWWWWWWWW",
-            "WEEDDDEDDDDDEEW",
+            "WEEEDDDDDDDEEEW",
             "WEBDBEBEBEBDBEW",
             "WEDDDDDDEEEDDEW",
             "WDBEBEBEBEBDBDW",

@@ -47,7 +47,7 @@ class Bomba(Sprite):
             pygame.transform.scale(pygame.image.load('Bombas/bombinha1.png').convert_alpha(), tamanho),
             pygame.transform.scale(pygame.image.load('Bombas/bombinha02.png').convert_alpha(), tamanho),
             pygame.transform.scale(pygame.image.load('Bombas/bombinha03.png').convert_alpha(), tamanho),
-            pygame.transform.scale(pygame.image.load('Bombas/bombinha04.png').convert_alpha(), tamanho)
+            pygame.transform.scale(pygame.image.load('Bombas/bombinha04.png').convert_alpha(), tamanho) #Provisorio, porra
         ]
 
         self.image = self.images[self.image_index]
@@ -56,7 +56,8 @@ class Bomba(Sprite):
         self.contador_tempo = 0
     
     def criar_explosao(self): 
-        explosao = Explosão(self.rect.center, (self.__raiodeexplosao * 2, self.__raiodeexplosao * 2), 0.09, self.mapa)
+        explosao = Explosão(self.posicaoBomba, (self.__raiodeexplosao * 5, self.__raiodeexplosao * 5), 0.3, self.mapa)
+
         self.mapa.explosoes.add(explosao)
 
         return explosao
@@ -72,7 +73,11 @@ class Bomba(Sprite):
                 bloco.kill()
                 self.mapa.blocos.remove(bloco)
                 bloco_destruido = True
-                break
+                if raio_explosao.colliderect(bloco.rect) and bloco.destrutivel:
+                    print(f"Colisão detectada com bloco destrutível: {bloco.rect}") #Testando a colisão
+                    bloco.kill()
+                    self.mapa.blocos.remove(bloco)
+                    bloco_destruido = True
         
         for jogador in self.mapa.jogadores:
             if raio_explosao.colliderect(jogador.rect):
@@ -92,6 +97,7 @@ class Bomba(Sprite):
 
 
     def update(self, dt):
+        dt = dt / 10
         self.tempo_decorrido +=  dt
         self.contador_tempo += dt
         if self.contador_tempo >= self.tempo_animacao:
