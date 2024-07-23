@@ -125,7 +125,7 @@ class Inimigo(Sprite):
     def plantar_bomba(self):
         current_time = pygame.time.get_ticks() / 1000
         if current_time - self.tempo_ultimo_plante >= self.intervalo_bomba:
-            bomba = Bomba(self.rect.topleft, 2, 20, (40, 40), self.mapa, dono= self)
+            bomba = Bomba(self.rect.topleft, 2, 30, (40, 40), self.mapa, dono= self)
             self.minhas_bombas.append(bomba)
             self.mapa.bombas.add(bomba)
             self.tempo_ultimo_plante = current_time

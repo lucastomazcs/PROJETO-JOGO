@@ -65,7 +65,8 @@ class Bomba(Sprite):
         self.contador_tempo = 0
     
     def criar_explosao(self): 
-        explosao = Explosao(self.posicaoBomba, (self.__raiodeexplosao * 5, self.__raiodeexplosao * 5), 0.3, self.mapa, dono= self.dono)
+        centro_explosao = (self.rect.centerx, self.rect.centery)
+        explosao = Explosao(centro_explosao, (self.__raiodeexplosao * 2, self.__raiodeexplosao * 2), 0.3, self.mapa, dono= self.dono)
 
         self.mapa.explosoes.add(explosao)
 
