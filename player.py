@@ -20,7 +20,7 @@ class Player(Sprite):
             pygame.transform.scale(pygame.image.load('Bomberman/bomberman01.png').convert_alpha(), tamanho),
             pygame.transform.scale(pygame.image.load('Bomberman/bomberman02.png').convert_alpha(), tamanho),
             pygame.transform.scale(pygame.image.load('Bomberman/bomberman03.png').convert_alpha(), tamanho),
-            pygame.transform.scale(pygame.image.load('Bomberman/bomberman03.png').convert_alpha(), tamanho)
+            pygame.transform.scale(pygame.image.load('Bomberman/bomberman04.png').convert_alpha(), tamanho)
         ]
         self.image_index = 0
         self.image = self.images[self.image_index]
@@ -121,7 +121,7 @@ class Player(Sprite):
             elif self.image == self.images[3]:  # Imagem apontando para esquerda
                 bomba_pos = (self.rect.left - 40, self.rect.centery - 20)
                         
-            bomba = Bomba(bomba_pos, 4.0, 30, (40, 40), self.mapa)
+            bomba = Bomba(bomba_pos, 4.0, 50, (40, 40), self.mapa)
 
             self.mapa.bombas.add(bomba)
             self.tempo_ultimo_plante = current_time #Atualiza o tempo da ultima bomba plantada
