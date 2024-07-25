@@ -3,7 +3,7 @@ from mapa import Mapa
 from pygame.sprite import Sprite
 from bomba import Bomba
 
-class Player(Sprite):
+class Player(Sprite): #herança da classe Sprite
     def __init__(self, posicao, vida, velocidade, range_bomba, mapa, tamanho):
         super().__init__() #Inicialização da Super classe: Sprite através de um metodo construtor
         

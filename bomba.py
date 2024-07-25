@@ -2,7 +2,7 @@ import pygame
 from pygame.sprite import Sprite, Group
 import math
 
-class Explosao(Sprite):
+class Explosao(Sprite): #herança da classe Sprite
     def __init__(self, posicao, tamanho, tempo_animacao, mapa, dono = None):
         super().__init__()
 
@@ -40,7 +40,7 @@ class Explosao(Sprite):
                 sprite.sofrer_dano(self)
 
 
-class Bomba(Sprite):
+class Bomba(Sprite): #herança da classe Sprite
     def __init__(self, posicaobomba, tempo, raiodeexplosao, tamanho, mapa, dono = None):
         pygame.sprite.Sprite.__init__(self)
 

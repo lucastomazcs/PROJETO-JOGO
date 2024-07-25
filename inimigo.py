@@ -7,7 +7,7 @@ from bomba import Bomba
 from player import Player
 
 
-class Inimigo(Sprite):
+class Inimigo(Sprite): #herança da classe Sprite
     def __init__(self, posicao, vida, velocidade, direcao, mapa, tamanho):
         super().__init__()
         self.__posicao = posicao

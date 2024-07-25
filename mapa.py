@@ -2,7 +2,7 @@ import pygame
 from pygame.sprite import Sprite
 
 
-class Bloco(Sprite):
+class Bloco(Sprite): #herança da classe Sprite
     def __init__(self, imagem, x, y, tamanho_bloco, destrutivel = False):
         super().__init__() #Inicializando a sprite
         self.image = pygame.image.load(imagem).convert_alpha()
