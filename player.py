@@ -113,11 +113,11 @@ class Player(Sprite):
         if current_time - self.tempo_ultimo_plante >= self.intervalo_bomba:
             if self.image == self.images[0]:
                 bomba_pos = (self.rect.centerx - 25, (self.rect.bottom + self.rect.height // 2) - 10)
-            elif self.image == self.images[1]:  # Imagem apontando para direita
+            elif self.image == self.images[1]:  #Imagem apontando para direita
                 bomba_pos = ((self.rect.right + self.rect.width // 2) - 20, self.rect.centery - 19)
-            elif self.image == self.images[2]:  # Imagem apontando para cima
+            elif self.image == self.images[2]:  #Imagem apontando para cima
                 bomba_pos = (self.rect.centerx - 20, (self.rect.top - self.rect.height // 2) - 20)
-            elif self.image == self.images[3]:  # Imagem apontando para esquerda
+            elif self.image == self.images[3]:  #Imagem apontando para esquerda
                 bomba_pos = (self.rect.left - 40, self.rect.centery - 20)
                         
             bomba = Bomba(bomba_pos, 4.0, 50, (40, 40), self.mapa)

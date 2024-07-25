@@ -76,7 +76,6 @@ class Bomba(Sprite):
         raio_explosao = explosao.rect
         bloco_destruido = False
 
-        #Definindo centro da explosão:
         centro_explosao = raio_explosao.center
 
         #Identificando o bloco mais proximo do centro da explosão:
