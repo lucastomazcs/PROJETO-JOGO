@@ -47,7 +47,7 @@ def main():
     tamanho_imagem = (tamanho_bloco - 9, tamanho_bloco - 9)
     tamanho_imagem_inimigo = (tamanho_bloco - 9, tamanho_bloco - 9)
     jogador = Player((60, 60), 100, 2, 3, mapa, tamanho= tamanho_imagem)
-    inimigo = Inimigo((tamanho_bloco * 14, tamanho_bloco * 14), 3, 5, 'direcao', mapa, tamanho = tamanho_imagem_inimigo)
+    inimigo = Inimigo((tamanho_bloco * 14, tamanho_bloco * 14), 3, 15, 'direcao', mapa, tamanho = tamanho_imagem_inimigo)
 
     mapa.jogadores = [jogador]
     mapa.inimigos = [inimigo]
@@ -107,5 +107,5 @@ def main():
     pygame.quit()
     sys.exit()
 
-if __name__ == "__main__":
-    main()
+
+main()
