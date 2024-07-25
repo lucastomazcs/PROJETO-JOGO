@@ -115,13 +115,14 @@ class Inimigo(Sprite):
                 return True
         return False
     
+    #Verifica o caminho para ver se está livre:
     def caminho_bloqueado(self):
         for bloco in self.mapa.blocos:
             if bloco.destrutivel and self.rect.colliderect(bloco.rect.inflate(20,20)):
                 return True
         return False
     
-
+    # Inimigo cria o objeto bomba e faz o plante:
     def plantar_bomba(self):
         current_time = pygame.time.get_ticks() / 1000
         if current_time - self.tempo_ultimo_plante >= self.intervalo_bomba:
@@ -147,6 +148,7 @@ class Inimigo(Sprite):
         print("O Inimigo morreu!!")
         self.kill()
 
+    #Verifica a colisão do inimigo com blocos e bomba:
     def colisao(self, sprite, eixo):
         if eixo == 'x':
             if self.rect.x < sprite.rect.x:

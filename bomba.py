@@ -79,7 +79,7 @@ class Bomba(Sprite):
         #Definindo centro da explosão:
         centro_explosao = raio_explosao.center
 
-        #Identificando o blco mais proximo do centro da explosão:
+        #Identificando o bloco mais proximo do centro da explosão:
         bloco_mais_proximo = None
         menor_distancia = float('inf')
 

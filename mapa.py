@@ -73,8 +73,6 @@ class Mapa:
                 x_pos = x * self.tamanho_bloco
                 y_pos = y * self.tamanho_bloco
                 if bloco == 'W':
-                    #Adicionar Sprites que faltam 
-
                     bloco_lateral = Bloco('Blocos/bloco_lateral4.png', x_pos, y_pos, self.tamanho_bloco)
                     self.blocos.add(bloco_lateral)
                 elif bloco == 'B':

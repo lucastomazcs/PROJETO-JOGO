@@ -14,7 +14,6 @@ class Player(Sprite):
         self.mapa = mapa
 
         #Carregando imagens de animação do jogador:
-        #Falta o sprite virando para a esquerda
         self.images = [
 
             pygame.transform.scale(pygame.image.load('Bomberman/bomberman01.png').convert_alpha(), tamanho),
@@ -125,7 +124,8 @@ class Player(Sprite):
 
             self.mapa.bombas.add(bomba)
             self.tempo_ultimo_plante = current_time #Atualiza o tempo da ultima bomba plantada
-        
+    
+    #Metodo para dano sofrido pelo jogador:
     def sofrer_dano(self):
         self.__vida -= 1
         if self.__vida <= 0:
