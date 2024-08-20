@@ -47,6 +47,10 @@ class Jogo:
         self.sprites.add(self.jogador)
         self.sprites.add(self.inimigo)
 
+        #Criando botões:
+        self.botao_start = pygame.Rect(300, 455, 150, 50)
+        self.botao_sair = pygame.Rect(300, 530, 150, 50)
+
         self.salvar = Salvar()
 
         self.estado = "Inicial" #Define Estado inicial do Jogo
@@ -56,6 +60,10 @@ class Jogo:
         imagem_inicio = pygame.image.load("telas/tela_inicial.png")
         imagem_inicio = pygame.transform.scale(imagem_inicio, (self.largura, self.altura))
         self.tela.blit(imagem_inicio, (0,0))
+
+       # pygame.draw.rect(self.tela, (0,0,0), self.botao_start, 2)
+       # pygame.draw.rect(self.tela, (0,0,0), self.botao_sair, 2)
+
         pygame.display.flip()
 
     def tela_game_over(self):
@@ -90,6 +98,12 @@ class Jogo:
                 elif evento.key == pygame.K_l:
                     self.salvar.carregar_jogo(self.jogador, self.inimigo, self.mapa)
                     self.estado = "Jogando"
+            elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:  # Clique com o botão esquerdo do mouse
+                if self.estado == "Inicial":
+                    if self.botao_start.collidepoint(evento.pos):  # Se clicar no botão Start invisível
+                        self.estado = "Jogando"
+                    elif self.botao_sair.collidepoint(evento.pos):  # Se clicar no botão Sair invisível
+                        self.rodando = False
 
     def reiniciar_jogo(self):
         self.__init__()
