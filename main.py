@@ -6,7 +6,7 @@ from inimigo import Inimigo
 from tkinter import *
 from config import Configurações
 
-
+#lala
 pygame.init()
 #ajusta o tamanho da tela de acordo com o monitor do usuário
 root = Tk()

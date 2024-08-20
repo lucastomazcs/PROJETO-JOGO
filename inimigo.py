@@ -62,17 +62,17 @@ class Inimigo(Personagem, Sprite):  # Inimigo herda de Personagem e Sprite
             direcao_x = 0
             direcao_y = 0
 
-        # Tentativa de movimento no eixo X
+        #Tentativa de movimento no eixo X
         self.rect.x += direcao_x
 
-        # Checa colisões com blocos e bombas no eixo X
+        #Checa colisões com blocos e bombas no eixo X
         if pygame.sprite.spritecollideany(self, self.mapa.blocos) or pygame.sprite.spritecollideany(self, self.mapa.bombas):
             self.rect.x = posicao_original[0]
 
-        # Tentativa de movimento no eixo Y
+        #Tentativa de movimento no eixo Y
         self.rect.y += direcao_y
 
-        # Checa colisões com blocos e bombas no eixo Y
+        #Checa colisões com blocos e bombas no eixo Y
         if pygame.sprite.spritecollideany(self, self.mapa.blocos) or pygame.sprite.spritecollideany(self, self.mapa.bombas):
             self.rect.y = posicao_original[1]
 
