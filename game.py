@@ -49,6 +49,15 @@ class Jogo:
 
         self.salvar = Salvar()
 
+        self.estado = "Inicial" #Define Estado inicial do Jogo
+
+    
+    def tela_inicial(self):
+        imagem_inicio = pygame.image.load("telas/tela_inicial.png")
+        imagem_inicio = pygame.transform.scale(imagem_inicio, (self.largura, self.altura))
+        self.tela.blit(imagem_inicio, (0,0))
+        pygame.display.flip()
+
     def tela_game_over(self):
         imagem_game_over = pygame.image.load("telas/Tela_Game_Overr.png")
         imagem_game_over = pygame.transform.scale(imagem_game_over, (self.largura, self.altura))
@@ -66,7 +75,9 @@ class Jogo:
             if evento.type == pygame.QUIT:
                 self.rodando = False
             elif evento.type == pygame.KEYDOWN:
-                if self.game_over and evento.key == pygame.K_r:
+                if self.estado == "Inicial" and evento.key == pygame.K_SPACE:  # Pressione espaço para iniciar
+                    self.estado = "Jogando"
+                elif self.game_over and evento.key == pygame.K_r:
                     self.reiniciar_jogo()
                 elif self.game_over and evento.key == pygame.K_q:
                     self.rodando = False
@@ -78,40 +89,44 @@ class Jogo:
                     self.salvar.salvar_jogo(self.jogador, self.inimigo, self.mapa)
                 elif evento.key == pygame.K_l:
                     self.salvar.carregar_jogo(self.jogador, self.inimigo, self.mapa)
+                    self.estado = "Jogando"
 
     def reiniciar_jogo(self):
         self.__init__()
 
     def update(self, dt):
-        if not self.game_over and not self.vitoria:
-            self.jogador.update(dt)
-            self.inimigo.update(self.jogador.rect.topleft, dt)
+        if self.estado == "Jogando":
+            if not self.game_over and not self.vitoria:
+                self.jogador.update(dt)
+                self.inimigo.update(self.jogador.rect.topleft, dt)
 
-            self.tela.fill(self.cor_preta)
-            self.mapa.desenhar(self.tela)
-            self.mapa.bombas.draw(self.tela)
-            self.sprites.draw(self.tela)
+                self.tela.fill(self.cor_preta)
+                self.mapa.desenhar(self.tela)
+                self.mapa.bombas.draw(self.tela)
+                self.sprites.draw(self.tela)
 
-            # Atualiza e desenha as explosões
-            self.mapa.explosoes.update(dt)
-            self.mapa.explosoes.draw(self.tela)
+                # Atualiza e desenha as explosões
+                self.mapa.explosoes.update(dt)
+                self.mapa.explosoes.draw(self.tela)
 
-            self.mapa.update(dt)
+                self.mapa.update(dt)
 
-            pygame.display.flip()
+                pygame.display.flip()
 
-            if not self.jogador.alive():
-                self.game_over = True
-            if not self.inimigo.alive():
-                self.vitoria = True
+                if not self.jogador.alive():
+                    self.game_over = True
+                if not self.inimigo.alive():
+                    self.vitoria = True
 
-        elif self.game_over:
-            self.tela_game_over()
-            self.clock.tick(60)
-        elif self.vitoria:
-            self.tela_vitoria()
-            self.clock.tick(60)
-    
+            elif self.game_over:
+                self.tela_game_over()
+                self.clock.tick(60)
+            elif self.vitoria:
+                self.tela_vitoria()
+                self.clock.tick(60)
+        
+        elif self.estado == "Inicial":
+            self.tela_inicial()    
 
     def run(self):
         while self.rodando:
