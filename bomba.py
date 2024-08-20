@@ -2,7 +2,7 @@ import pygame
 from pygame.sprite import Sprite, Group
 import math
 
-class Explosao(Sprite):
+class Explosao(Sprite): #herança da classe Sprite
     def __init__(self, posicao, tamanho, tempo_animacao, mapa, dono = None):
         super().__init__()
 
@@ -40,7 +40,7 @@ class Explosao(Sprite):
                 sprite.sofrer_dano(self)
 
 
-class Bomba(Sprite):
+class Bomba(Sprite): #herança da classe Sprite
     def __init__(self, posicaobomba, tempo, raiodeexplosao, tamanho, mapa, dono = None):
         pygame.sprite.Sprite.__init__(self)
 
@@ -61,12 +61,12 @@ class Bomba(Sprite):
 
         self.image = self.images[self.image_index]
         self.rect = self.image.get_rect(topleft = posicaobomba)
-        self.tempo_animacao = 0.3
+        self.tempo_animacao = 0.05
         self.contador_tempo = 0
     
     def criar_explosao(self): 
         centro_explosao = (self.rect.centerx, self.rect.centery)
-        explosao = Explosao(centro_explosao, (self.__raiodeexplosao * 2, self.__raiodeexplosao * 2), 0.3, self.mapa, dono= self.dono)
+        explosao = Explosao(centro_explosao, (self.__raiodeexplosao * 2, self.__raiodeexplosao * 2),0.05, self.mapa, dono= self.dono)
 
         self.mapa.explosoes.add(explosao)
 
@@ -76,7 +76,6 @@ class Bomba(Sprite):
         raio_explosao = explosao.rect
         bloco_destruido = False
 
-        #Definindo centro da explosão:
         centro_explosao = raio_explosao.center
 
         #Identificando o bloco mais proximo do centro da explosão:
@@ -119,7 +118,6 @@ class Bomba(Sprite):
 
 
     def update(self, dt):
-        dt = dt / 10
         self.tempo_decorrido +=  dt
         self.contador_tempo += dt
         if self.contador_tempo >= self.tempo_animacao:
@@ -140,5 +138,4 @@ class Bomba(Sprite):
     def raio(self):
         return self.__raiodeexplosao
     
-
 

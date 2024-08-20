@@ -4,6 +4,7 @@ from mapa import Mapa
 from player import Player
 from inimigo import Inimigo
 from tkinter import *
+from config import Configurações
 
 
 pygame.init()

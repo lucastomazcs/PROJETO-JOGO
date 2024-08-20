@@ -1,42 +1,32 @@
-from pygame.sprite import Sprite
 import pygame
+from pygame.sprite import Sprite
 import math
-import random
 from mapa import Mapa
 from bomba import Bomba
-from player import Player
+from personagens import Personagem
 
-
-class Inimigo(Sprite):
+class Inimigo(Personagem, Sprite):  # Inimigo herda de Personagem e Sprite
     def __init__(self, posicao, vida, velocidade, direcao, mapa, tamanho):
-        super().__init__()
-        self.__posicao = posicao
-        self.__vida = vida
-        self.__velocidade = velocidade
+        # Inicialização da classe base (Personagem)
+        Personagem.__init__(self, vida, posicao, velocidade, range_bomba=2)
+
+        # Inicialização da classe Sprite
+        Sprite.__init__(self)
+        
+        self.mapa = mapa
         self.__direcao = direcao
 
-        self.mapa = mapa
-        
         # Carregando imagens inimigo
         self.images = [
-            pygame.transform.scale(pygame.image.load(
-                'Inimigo/inimigo_andando01.png').convert_alpha(), tamanho),
-            pygame.transform.scale(pygame.image.load(
-                'Inimigo/inimigo_andando02.png').convert_alpha(), tamanho),
-            pygame.transform.scale(pygame.image.load(
-                'Inimigo/inimigo_andando03.png').convert_alpha(), tamanho),
-            pygame.transform.scale(pygame.image.load(
-                'Inimigo/inimigo_andando_lado01.png').convert_alpha(), tamanho),
-            pygame.transform.scale(pygame.image.load(
-                'Inimigo/inimigo_andando_lado02.png').convert_alpha(), tamanho),
-            pygame.transform.scale(pygame.image.load(
-                'Inimigo/inimigo_andando_lado03.png').convert_alpha(), tamanho),
-            pygame.transform.scale(pygame.image.load(
-                'Inimigo/inimigo_andando_tras01.png').convert_alpha(), tamanho),
-            pygame.transform.scale(pygame.image.load(
-                'Inimigo/inimigo_andando_tras02.png').convert_alpha(), tamanho),
-            pygame.transform.scale(pygame.image.load(
-                'Inimigo/inimigo_andando_tras03.png').convert_alpha(), tamanho)
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando01.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando02.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando03.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando_lado01.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando_lado02.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando_lado03.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando_tras01.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando_tras02.png').convert_alpha(), tamanho),
+            pygame.transform.scale(pygame.image.load('Inimigo/inimigo_andando_tras03.png').convert_alpha(), tamanho)
         ]
 
         self.image_index = 0
@@ -53,25 +43,11 @@ class Inimigo(Sprite):
         self.intervalo_bomba = 3
         self.minhas_bombas = []
 
-
-    @property
-    def posicao(self):
-        return self.__posicao
-
-    @property
-    def vida(self):
-        return self.__vida
-
-    @property
-    def velocidade(self):
-        return self.__velocidade
-
     @property
     def direcao(self):
         return self.__direcao
 
     def movimento(self, posicao_player, dt: float):
-
         posicao_original = self.rect.topleft
     
         # Calcula a direção para o jogador:
@@ -100,66 +76,35 @@ class Inimigo(Sprite):
         if pygame.sprite.spritecollideany(self, self.mapa.blocos) or pygame.sprite.spritecollideany(self, self.mapa.bombas):
             self.rect.y = posicao_original[1]
 
-        self.__posicao = self.rect.topleft
+        self._Personagem__posicao = self.rect.topleft  # Atualiza a posição herdada de Personagem
 
         if self.caminho_bloqueado():
             self.plantar_bomba()
 
-        # Debugging output
-        # print(f"Direção X: {direcao_x}, Direção Y: {direcao_y}")
-        # print(f"Posição: {self.rect.topleft}")
-
-    def colidir_propria_bomba(self):
-        for bomba in self.minhas_bombas:
-            if self.rect.colliderect(bomba.rect):
-                return True
-        return False
-    
-    #Verifica o caminho para ver se está livre:
     def caminho_bloqueado(self):
         for bloco in self.mapa.blocos:
-            if bloco.destrutivel and self.rect.colliderect(bloco.rect.inflate(20,20)):
+            if bloco.destrutivel and self.rect.colliderect(bloco.rect.inflate(20, 20)):
                 return True
         return False
-    
-    # Inimigo cria o objeto bomba e faz o plante:
+
     def plantar_bomba(self):
         current_time = pygame.time.get_ticks() / 1000
         if current_time - self.tempo_ultimo_plante >= self.intervalo_bomba:
-            bomba = Bomba(self.rect.topleft, 2, 30, (40, 40), self.mapa, dono= self)
+            bomba = Bomba(self.rect.topleft, self.range_bomba, 30, (40, 40), self.mapa, dono=self)
             self.minhas_bombas.append(bomba)
             self.mapa.bombas.add(bomba)
             self.tempo_ultimo_plante = current_time
 
     def sofrer_dano(self, fonte):
+        # Evita dano de suas próprias bombas
         if fonte in self.minhas_bombas:
             return
-        self.__vida -= 1
-        print(f"Inimigo sofreu dano. Vidas restantes: {self.__vida}")
-        if self.__vida <= 0:
-            self.morrer()
-            
+        super().sofrer_dano(fonte)  # Usa o método herdado de Personagem
+
     def matar_jogador(self):
         for jogador in self.mapa.jogadores:
             if pygame.sprite.collide_rect(self, jogador):
                 jogador.morrer()
-
-    def morrer(self):
-        print("O Inimigo morreu!!")
-        self.kill()
-
-    #Verifica a colisão do inimigo com blocos e bomba:
-    def colisao(self, sprite, eixo):
-        if eixo == 'x':
-            if self.rect.x < sprite.rect.x:
-                self.rect.right = sprite.rect.left
-            else:
-                self.rect.left = sprite.rect.right
-        elif eixo == 'y':
-            if self.rect.y < sprite.rect.y:
-                self.rect.bottom = sprite.rect.top
-            else:
-                self.rect.top = sprite.rect.bottom
 
     def animacao(self, dt: float):
         self.contador_tempo += dt
@@ -169,10 +114,7 @@ class Inimigo(Sprite):
             self.image = self.images[self.image_index]
 
     def update(self, posicao_player, dt: float):
-        # print(f"Update chamado com posicao_player: {posicao_player}, dt: {dt}") # Debug
-        # Atualiza a posição do inimigo
         self.movimento(posicao_player, dt)
-        # Atualiza animação quando inimigo se move
         self.animacao(dt)
-        if posicao_player[0] - self.rect.centerx <= 40 and posicao_player[1] - self.rect.centery <= 40:
+        if abs(posicao_player[0] - self.rect.centerx) <= 40 and abs(posicao_player[1] - self.rect.centery) <= 40:
             self.matar_jogador()
