@@ -65,6 +65,7 @@ class Personagem:
     
     def sofrer_dano(self, fonte):
         self.__vida -= 1
+        print(f'Perdeu vida, vidas {self.__vida}')
         if self.__vida <= 0:
             self.morrer()
     

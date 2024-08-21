@@ -5,9 +5,10 @@ from player import Player
 from inimigo import Inimigo
 from tkinter import Tk
 from save import Salvar
+from config import Configurações
 
 class Jogo:
-    def __init__(self):
+    def __init__(self, dificuldade = 'Médio'):
         pygame.init()
 
 
@@ -31,14 +32,30 @@ class Jogo:
         self.vitoria = False
         self.rodando = True
 
+        self.dificuldade = dificuldade
+
+        if self.dificuldade == 'Fácil':
+            self.velocidade_jogador = 3
+            self.velocidade_inimigo = 50
+            self.vida_inimigo = 1
+        elif self.dificuldade == 'Médio':
+            self.velocidade_jogador = 2
+            self.velocidade_inimigo = 100
+            self.vida_inimigo = 2
+        elif self.dificuldade == 'Difícil':
+            self.velocidade_jogador = 1
+            self.velocidade_inimigo = 150
+            self.vida_inimigo = 4
+
+
         # Inicializa o mapa, jogador e inimigo
         self.mapa = Mapa(self.num_blocos_x, self.num_blocos_y, self.tamanho_bloco, self.tela)
         tamanho_imagem = (self.tamanho_bloco - 9, self.tamanho_bloco - 9)
         tamanho_imagem_inimigo = (self.tamanho_bloco - 9, self.tamanho_bloco - 9)
 
 
-        self.jogador = Player((60, 60), 100, 2, 3, self.mapa, tamanho=tamanho_imagem)
-        self.inimigo = Inimigo((self.tamanho_bloco * 14, self.tamanho_bloco * 14), 3, 150, 'direcao', self.mapa, tamanho=tamanho_imagem_inimigo)
+        self.jogador = Player((60, 60), 100, self.velocidade_jogador, 3, self.mapa, tamanho=tamanho_imagem)
+        self.inimigo = Inimigo((self.tamanho_bloco * 14, self.tamanho_bloco * 14), self.vida_inimigo, self.velocidade_inimigo, 'direcao', self.mapa, tamanho=tamanho_imagem_inimigo)
 
         self.mapa.jogadores = [self.jogador]
         self.mapa.inimigos = [self.inimigo]
@@ -152,5 +169,7 @@ class Jogo:
         sys.exit()
 
 if __name__ == "__main__":
-    game = Jogo()
+    configuracoes = Configurações()
+    configuracoes.escolher_dificuldade('Difícil')
+    game = Jogo(dificuldade=configuracoes.dificuldade_atual)
     game.run()
