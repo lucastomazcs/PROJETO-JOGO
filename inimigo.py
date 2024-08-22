@@ -42,6 +42,9 @@ class Inimigo(Personagem, Sprite):  # Inimigo herda de Personagem e Sprite
         self.tempo_ultimo_plante = 0
         self.intervalo_bomba = 3
         self.minhas_bombas = []
+        self.invulneravel = False
+        self.tempo_invulnerabilidade = 1.0  # tempo de invulnerabilidade em segundos
+        self.ultimo_tempo_dano = 0
 
     @property
     def direcao(self):
@@ -96,15 +99,29 @@ class Inimigo(Personagem, Sprite):  # Inimigo herda de Personagem e Sprite
             self.tempo_ultimo_plante = current_time
 
     def sofrer_dano(self, fonte):
+        
+        current_time = pygame.time.get_ticks() / 1000
+
         # Evita dano de suas próprias bombas
         if fonte in self.minhas_bombas:
             return
-        super().sofrer_dano(fonte)  # Usa o método herdado de Personagem
+        
+        #Checa se inimigo está invulneravel
+        if self.invulneravel and current_time - self.ultimo_tempo_dano < self.tempo_invulnerabilidade:
+            return
+        
 
-    def matar_jogador(self):
-        for jogador in self.mapa.jogadores:
-            if pygame.sprite.collide_rect(self, jogador):
-                jogador.morrer()
+        #Aplica o dano caso não esteja invulneravel:
+        super().sofrer_dano(fonte)  # Usa o método herdado de Personagem
+        
+        #Ativa o modo invulneravel:
+        self.invulneravel = True
+        self.ultimo_tempo_dano = current_time
+
+
+    def matar_jogador(self,jogador):
+       if pygame.sprite.collide_rect(self, jogador):
+            jogador.morrer() 
 
     def animacao(self, dt: float):
         self.contador_tempo += dt
@@ -113,8 +130,43 @@ class Inimigo(Personagem, Sprite):  # Inimigo herda de Personagem e Sprite
             self.image_index = (self.image_index + 1) % len(self.images)
             self.image = self.images[self.image_index]
 
-    def update(self, posicao_player, dt: float):
-        self.movimento(posicao_player, dt)
+    def update(self, jogadores, dt: float):
+        #Escolhe o jogador mais proximo:
+        jogador_mais_proximo = self.encontrar_jogador_mais_proximo(jogadores)
+
+        #Move em direção ao jogador mais proximo:
+        self.movimento(jogador_mais_proximo.rect.topleft, dt)
         self.animacao(dt)
-        if abs(posicao_player[0] - self.rect.centerx) <= 40 and abs(posicao_player[1] - self.rect.centery) <= 40:
-            self.matar_jogador()
+
+        # Tenta matar o jogador mais próximo se estiver a uma certa distância
+        if abs(jogador_mais_proximo.rect.centerx - self.rect.centerx) <= 40 and abs(jogador_mais_proximo.rect.centery - self.rect.centery) <= 40:
+            self.matar_jogador(jogador_mais_proximo)
+
+        # Verifica se o inimigo está invulnerável
+        if self.invulneravel:
+            current_time = pygame.time.get_ticks() / 1000
+            if current_time - self.ultimo_tempo_dano > self.tempo_invulnerabilidade:
+                self.invulneravel = False
+        
+        if self.invulneravel:
+            current_time = pygame.time.get_ticks() / 1000
+            if current_time - self.ultimo_tempo_dano > self.tempo_invulnerabilidade:
+                self.invulneravel = False
+    
+    def encontrar_jogador_mais_proximo(self, jogadores):
+        jogador_mais_proximo = [0]
+        menor_distancia = self.calcular_distancia(jogadores[0].rect.topleft)
+
+        #Verifica se o segundo jogador está mais proximo:
+        for jogador in jogadores[1:]:
+            distancia = self.calcular_distancia(jogador.rect.topleft)
+        if distancia < menor_distancia:
+            menor_distancia = distancia
+            jogador_mais_proximo = jogador
+            
+        return jogador_mais_proximo
+    
+    def calcular_distancia(self, posicao_jogador):
+        delta_x = posicao_jogador[0] - self.rect.centerx
+        delta_y = posicao_jogador[1] - self.rect.centery
+        return math.hypot(delta_x, delta_y)

@@ -37,14 +37,14 @@ class Jogo:
         if self.dificuldade == 'Fácil':
             self.velocidade_jogador = 3
             self.velocidade_inimigo = 50
-            self.vida_inimigo = 1
+            self.vida_inimigo = 2
         elif self.dificuldade == 'Médio':
             self.velocidade_jogador = 2
             self.velocidade_inimigo = 100
-            self.vida_inimigo = 2
+            self.vida_inimigo = 3
         elif self.dificuldade == 'Difícil':
             self.velocidade_jogador = 1
-            self.velocidade_inimigo = 150
+            self.velocidade_inimigo = 200
             self.vida_inimigo = 4
 
 
@@ -54,7 +54,7 @@ class Jogo:
         tamanho_imagem_inimigo = (self.tamanho_bloco - 9, self.tamanho_bloco - 9)
 
 
-        self.jogador = Player((60, 60), 100, self.velocidade_jogador, 3, self.mapa, tamanho=tamanho_imagem)
+        self.jogador = Player((60, 60), 1, self.velocidade_jogador, 3, self.mapa, tamanho=tamanho_imagem)
         self.inimigo = Inimigo((self.tamanho_bloco * 14, self.tamanho_bloco * 14), self.vida_inimigo, self.velocidade_inimigo, 'direcao', self.mapa, tamanho=tamanho_imagem_inimigo)
 
         self.mapa.jogadores = [self.jogador]
@@ -73,7 +73,7 @@ class Jogo:
             'direita': pygame.K_RIGHT,
             'bomba': pygame.K_KP_ENTER
         }
-            self.jogador2 = Player((700, 60), 100, self.velocidade_jogador, 3, self.mapa, tamanho=tamanho_imagem, controles=controles_player2 )
+            self.jogador2 = Player((700, 60), 1, self.velocidade_jogador, 3, self.mapa, tamanho=tamanho_imagem, controles=controles_player2 )
             self.mapa.jogadores.append(self.jogador2)
             self.sprites.add(self.jogador2)
 
@@ -144,8 +144,9 @@ class Jogo:
                 self.jogador.update(dt)
                 if len(self.mapa.jogadores) > 1:
                     self.jogador2.update(dt)
+                    
 
-                self.inimigo.update(self.jogador.rect.topleft, dt)
+                self.inimigo.update(self.mapa.jogadores, dt)
 
                 self.tela.fill(self.cor_preta)
                 self.mapa.desenhar(self.tela)
@@ -191,7 +192,7 @@ class Jogo:
 
 if __name__ == "__main__":
     configuracoes = Configurações()
-    configuracoes.escolher_dificuldade('Difícil')
+    configuracoes.escolher_dificuldade('Fácil')
     configuracoes.escolher_numero_jogadores(2)
     game = Jogo(dificuldade=configuracoes.dificuldade_atual, numero_jogadores= configuracoes.numero_jogadores)
     game.run()
