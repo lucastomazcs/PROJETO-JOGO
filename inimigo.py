@@ -154,16 +154,22 @@ class Inimigo(Personagem, Sprite):  # Inimigo herda de Personagem e Sprite
                 self.invulneravel = False
     
     def encontrar_jogador_mais_proximo(self, jogadores):
-        jogador_mais_proximo = [0]
-        menor_distancia = self.calcular_distancia(jogadores[0].rect.topleft)
-
-        #Verifica se o segundo jogador está mais proximo:
-        for jogador in jogadores[1:]:
-            distancia = self.calcular_distancia(jogador.rect.topleft)
-        if distancia < menor_distancia:
-            menor_distancia = distancia
-            jogador_mais_proximo = jogador
+        jogador_mais_proximo = None
+        menor_distancia = float('inf')  # Inicializa com um valor muito grande
+    
+        # Percorre todos os jogadores
+        for jogador in jogadores:
+            if jogador.alive():
+                # Calcula a distância entre o inimigo e o jogador
+                delta_x = jogador.rect.centerx - self.rect.centerx
+                delta_y = jogador.rect.centery - self.rect.centery
+                distancia = math.hypot(delta_x, delta_y)  # Distância euclidiana
             
+                # Verifica se essa é a menor distância encontrada
+                if distancia < menor_distancia:
+                    menor_distancia = distancia
+                    jogador_mais_proximo = jogador
+    
         return jogador_mais_proximo
     
     def calcular_distancia(self, posicao_jogador):
