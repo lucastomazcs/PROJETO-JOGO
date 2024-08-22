@@ -5,7 +5,7 @@ from bomba import Bomba
 from personagens import Personagem
 
 class Player(Personagem, Sprite):  # Player herda de Personagem e Sprite
-    def __init__(self, posicao, vida, velocidade, range_bomba, mapa, tamanho):
+    def __init__(self, posicao, vida, velocidade, range_bomba, mapa, tamanho, controles = None):
         # Inicialização da classe base (Personagem)
         Personagem.__init__(self, vida, posicao, velocidade, range_bomba)
         
@@ -37,22 +37,34 @@ class Player(Personagem, Sprite):  # Player herda de Personagem e Sprite
         self.tempo_ultimo_plante = 0
         self.intervalo_bomba = 3
 
+
+        #Define os controles, usa por padrão WASD
+        self.controles = controles if controles else{
+            'cima': pygame.K_w,
+            'baixo': pygame.K_s,
+            'esquerda': pygame.K_a,
+            'direita': pygame.K_d,
+            'bomba': pygame.K_SPACE
+
+        }
+
+
     def movimento(self):
         keys = pygame.key.get_pressed()
         movimento_x = 0
         movimento_y = 0
 
         # Movimentação do jogador
-        if keys[pygame.K_w]:
+        if keys[self.controles['cima']]:
             movimento_y -= self.velocidade  # Usando o atributo herdado de Personagem
             self.image = self.images[2]
-        if keys[pygame.K_s]:
+        if keys[self.controles['baixo']]:
             movimento_y += self.velocidade
             self.image = self.images[0]
-        if keys[pygame.K_d]:
+        if keys[self.controles['direita']]:
             movimento_x += self.velocidade
             self.image = self.images[1]
-        if keys[pygame.K_a]:
+        if keys[self.controles['esquerda']]:
             movimento_x -= self.velocidade
             self.image = self.images[3]
 
@@ -84,5 +96,5 @@ class Player(Personagem, Sprite):  # Player herda de Personagem e Sprite
         self.movimento()
         # self.animacao(dt)  # Caso precise de animação
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
+        if keys[self.controles['bomba']]:
             self.plantar_bomba(dt)

@@ -8,9 +8,8 @@ from save import Salvar
 from config import Configurações
 
 class Jogo:
-    def __init__(self, dificuldade = 'Médio'):
+    def __init__(self, dificuldade = 'Médio', numero_jogadores = 1):
         pygame.init()
-
 
         root = Tk()
         altura_monitor = root.winfo_screenheight()
@@ -33,6 +32,7 @@ class Jogo:
         self.rodando = True
 
         self.dificuldade = dificuldade
+        self.numero_jogadores = numero_jogadores
 
         if self.dificuldade == 'Fácil':
             self.velocidade_jogador = 3
@@ -63,6 +63,19 @@ class Jogo:
         self.sprites = pygame.sprite.Group()
         self.sprites.add(self.jogador)
         self.sprites.add(self.inimigo)
+
+        #Verifica se o numero de jogadores é igual a 2 para adicionar o segundo:
+        if numero_jogadores == 2:
+            controles_player2 ={
+            'cima': pygame.K_UP,
+            'baixo': pygame.K_DOWN,
+            'esquerda': pygame.K_LEFT,
+            'direita': pygame.K_RIGHT,
+            'bomba': pygame.K_KP_ENTER
+        }
+            self.jogador2 = Player((700, 60), 100, self.velocidade_jogador, 3, self.mapa, tamanho=tamanho_imagem, controles=controles_player2 )
+            self.mapa.jogadores.append(self.jogador2)
+            self.sprites.add(self.jogador2)
 
         #Criando botões:
         self.botao_start = pygame.Rect(300, 455, 150, 50)
@@ -123,12 +136,15 @@ class Jogo:
                         self.rodando = False
 
     def reiniciar_jogo(self):
-        self.__init__()
+        self.__init__(dificuldade=self.dificuldade, numero_jogadores=self.numero_jogadores)
 
     def update(self, dt):
         if self.estado == "Jogando":
             if not self.game_over and not self.vitoria:
                 self.jogador.update(dt)
+                if len(self.mapa.jogadores) > 1:
+                    self.jogador2.update(dt)
+
                 self.inimigo.update(self.jogador.rect.topleft, dt)
 
                 self.tela.fill(self.cor_preta)
@@ -144,8 +160,13 @@ class Jogo:
 
                 pygame.display.flip()
 
-                if not self.jogador.alive():
-                    self.game_over = True
+                if len(self.mapa.jogadores) == 1:
+                    if not self.jogador.alive():
+                        self.game_over = True
+                elif len(self.mapa.jogadores) == 2:
+                    if not self.jogador.alive() and not self.jogador2.alive():
+                        self.game_over = True
+
                 if not self.inimigo.alive():
                     self.vitoria = True
 
@@ -171,5 +192,6 @@ class Jogo:
 if __name__ == "__main__":
     configuracoes = Configurações()
     configuracoes.escolher_dificuldade('Difícil')
-    game = Jogo(dificuldade=configuracoes.dificuldade_atual)
+    configuracoes.escolher_numero_jogadores(2)
+    game = Jogo(dificuldade=configuracoes.dificuldade_atual, numero_jogadores= configuracoes.numero_jogadores)
     game.run()
